@@ -8,6 +8,12 @@ const columns = [
     { name: "ACTIONS", uid: "actions" },
 ];
 
+const statusOptions = [
+    { name: "Active", uid: "active" },
+    { name: "Paused", uid: "paused" },
+    { name: "Vacation", uid: "vacation" },
+];
+
 const users = [
     {
         id: 1,
@@ -66,4 +72,4 @@ const users = [
     },
 ];
 
-export { columns, users };
+export { columns, users, statusOptions };

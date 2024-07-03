@@ -16,12 +16,18 @@ import {
 import { EditIcon } from "../../icons/EditIcon";
 import { EyeIcon } from "../../icons/EyeIcon";
 import { columns, users } from "./data";
-import { genderMap } from "@/components/constants";
+import Search from "@/components/search";
 
 const statusColorMap: any = {
     active: "success",
     paused: "danger",
     vacation: "warning",
+};
+
+const genderMap: any = {
+    1: "Male",
+    2: "Female",
+    3: "Other",
 };
 
 export default function UserManager() {
@@ -76,21 +82,24 @@ export default function UserManager() {
     }, []);
 
     return (
-        <Table aria-label="Example table with custom cells">
-            <TableHeader columns={columns}>
-                {(column) => (
-                    <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
-                        {column.name}
-                    </TableColumn>
-                )}
-            </TableHeader>
-            <TableBody items={users}>
-                {(item) => (
-                    <TableRow key={item.id}>
-                        {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-                    </TableRow>
-                )}
-            </TableBody>
-        </Table>
+        <>
+            <Search />
+            <Table aria-label="Example table with custom cells">
+                <TableHeader columns={columns}>
+                    {(column) => (
+                        <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
+                            {column.name}
+                        </TableColumn>
+                    )}
+                </TableHeader>
+                <TableBody items={users}>
+                    {(item) => (
+                        <TableRow key={item.id}>
+                            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
+        </>
     );
 }
