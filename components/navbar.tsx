@@ -77,6 +77,7 @@ export const Navbar = () => {
       >
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
+          <Button color="primary">Register / Login</Button>  
         </NavbarItem>
       </NavbarContent>
 
