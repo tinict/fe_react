@@ -1,3 +1,5 @@
+import { genderMap } from "@/common/constants";
+
 /**
  * Formats a phone number by removing all non-numeric characters except the plus sign, and replaces the country code +84 with 0.
  * This function is specifically designed for Vietnamese phone numbers but can be adapted for other formats.
@@ -5,10 +7,51 @@
  * @param {string} phone - The phone number to be formatted.
  * @returns {string} - The formatted phone number with non-numeric characters removed and the country code +84 replaced with 0.
  */
-export function formatPhone(phone: string): string {
+export const formatPhone = (phone: string): string => {
+    if (!phone) return 'N.A';
     let cleanPhone = phone.replace(/[^\d+]/g, '');
     cleanPhone = cleanPhone.replace(/^\+84/, '0');
     return cleanPhone;
+};
+
+/**
+ * 
+ * @param gender 
+ * @returns 
+ */
+export const formatGender = (gender: number): string => {
+    if (gender == genderMap.Male)
+        return 'Male';
+    if (gender == genderMap.Female)
+        return 'Female';
+    return 'Other';
+}
+
+/**
+ * 
+ * @param date 
+ * @returns 
+ */
+export const formatDate = (date: string): string => {
+    if(!date) return 'N.A';
+    let newDate = new Date(date).toUTCString();
+    return newDate;
+};
+
+/**
+ * 
+ * @param firstName 
+ * @param lastName 
+ * @returns 
+ */
+export const formatFullName = (firstName: string, lastName: string): string => {
+    if (firstName && lastName) 
+        return firstName.trim() + ' ' + lastName.trim();
+    else if (!firstName && lastName)
+        return lastName.trim();
+    else if (firstName && !lastName)
+        return firstName.trim();
+    else return 'N.A';
 };
 
 /**

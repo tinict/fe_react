@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -18,9 +20,14 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import {
   Logo,
 } from "@/components/icons";
-import CustomerTrigger from "./dropdowns/customerTrigger";
+import { useRouter } from 'next/navigation';
 
 export const Navbar = () => {
+  const router = useRouter();
+  
+  const redirectLogin = () => {
+    router.push('/login');
+  };
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
@@ -55,8 +62,7 @@ export const Navbar = () => {
       >
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
-          <Button color="primary">Register / Login</Button>
-          <CustomerTrigger />
+          <Button color="primary" onClick={redirectLogin}>Register / Login</Button>
         </NavbarItem>
       </NavbarContent>
 

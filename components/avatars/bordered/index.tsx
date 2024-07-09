@@ -1,12 +1,21 @@
 'use client';
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Avatar } from "@nextui-org/react";
 
-export default function AvatarBordered() {
+export default function AvatarBordered({ ...props }) {
+    const { classAttribute } = props;
+    const { urlPicture } = props;
+
+    const pictureUrl = useMemo(() => {
+        return urlPicture || "https://via.placeholder.com/150";
+    }, [urlPicture]);
+
     return (
-        <div className="flex gap-4 items-center">
-            <Avatar isBordered src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
-        </div>
+        <Avatar
+            isBordered
+            className={classAttribute.style}
+            src={pictureUrl}
+        />
     );
-}
+};
