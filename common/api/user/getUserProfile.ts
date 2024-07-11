@@ -2,8 +2,10 @@ import { ProfileGetMapper } from "@/mapping";
 import axios from "axios";
 import Cookies from 'js-cookie';
 
-type GetProfile = {
+type GetUserProfile = {
     id: string,
+    firstname: string,
+    lastname: string,
     username: string,
     gender: string,
     dob: string,
@@ -12,10 +14,12 @@ type GetProfile = {
     bio: string,
 };
 
-export const getProfile = async (): Promise<{ props: { repo: GetProfile } } | null>  => {
+export const getUserProfile = async ({ ...args }): Promise<{ props: { repo: GetUserProfile } } | null> => {
     const authorization = Cookies.get('client_token');
 
-    const res = await axios.get('http://localhost:5000/api/v1/sso/google/me', {
+    const { id } = args;
+
+    const res = await axios.get(`http://localhost:5000/api/v1/user/${id}`, {
         headers: { authorization }
     })
         .catch(function (error) {
@@ -23,8 +27,10 @@ export const getProfile = async (): Promise<{ props: { repo: GetProfile } } | nu
         });
 
     if (!res) return null;
-
-    const repo: GetProfile = ProfileGetMapper.toProfileGetMapper(res.data);
+    
+    //Get profile
+    console.log(res.data);
+    const repo: GetUserProfile = ProfileGetMapper.toProfileGetMapper(res.data);
 
     return {
         props: {

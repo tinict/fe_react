@@ -24,7 +24,7 @@ import { useRouter } from 'next/navigation';
 
 export const Navbar = () => {
   const router = useRouter();
-  
+
   const redirectLogin = () => {
     router.push('/login');
   };
@@ -74,7 +74,7 @@ export const Navbar = () => {
       <NavbarMenu>
         <div className="mx-4 mt-2 flex flex-col gap-2">
           {siteConfig.navMenuItems.map((item: any, index: number) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
+            <NavbarMenuItem key={`${item.label}-${index}`}>
               <Link
                 color={
                   index === 2
@@ -83,10 +83,10 @@ export const Navbar = () => {
                       ? "danger"
                       : "foreground"
                 }
-                href="#"
+                href={item.href} // Corrected the href property
                 size="lg"
               >
-                {item?.label}
+                {item.label}
               </Link>
             </NavbarMenuItem>
           ))}

@@ -1,6 +1,6 @@
 'use client';
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Table,
     TableHeader,
@@ -13,10 +13,27 @@ import {
     Tooltip,
     getKeyValue
 } from "@nextui-org/react";
-import { EditIcon } from "../../icons/EditIcon";
 import { EyeIcon } from "../../icons/EyeIcon";
-import { columns, users } from "./data";
+import { EditIcon } from "../../icons/EditIcon";
 import Search from "@/components/search";
+import { formatDate, formatFullName, formatGender, formatPhone } from "@/helpers/validate";
+import PaginationData from "@/components/pagination";
+import { useRouter } from "next/navigation";
+
+const columns = [
+    { name: "NAME", uid: "name" },
+    { name: "PHONE", uid: "phone" },
+    { name: "DOB", uid: "dob" },
+    { name: "GENDER", uid: "gender" },
+    { name: "ADDRESS", uid: "address" },
+    { name: "ACTIONS", uid: "actions" },
+];
+
+const statusOptions = [
+    { name: "Active", uid: "active" },
+    { name: "Paused", uid: "paused" },
+    { name: "Vacation", uid: "vacation" },
+];
 
 const statusColorMap: any = {
     active: "success",
@@ -24,13 +41,15 @@ const statusColorMap: any = {
     vacation: "warning",
 };
 
-const genderMap: any = {
-    1: "Male",
-    2: "Female",
-    3: "Other",
-};
+export default function UserManager({ ...props }) {
+    const { repo } = props.listProfile;
+    const userProfile = repo?.list?.data || [];
+    const router = useRouter();
 
-export default function UserManager() {
+    const handelShowProfile = (id: string) => {
+        router.push(`/profile/${id}`);
+    };
+
     const renderCell = React.useCallback((user: any, columnKey: any) => {
         const cellValue = user[columnKey];
 
@@ -38,39 +57,37 @@ export default function UserManager() {
             case "name":
                 return (
                     <User
-                        avatarProps={{ radius: "lg", src: user.avatar }}
-                        description={user.email}
-                        name={cellValue}
+                        avatarProps={{ radius: "lg", src: user.picture }}
+                        description={formatFullName(user.firstname, user.lastname)}
+                        name={user.email}
                     >
                         {user.email}
                     </User>
                 );
-            case "status":
-                return (
-                    <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-                        {cellValue}
-                    </Chip>
-                );
+            case "phone":
+                return formatPhone(user.phone);
             case "dob":
                 return (
                     <Chip className="capitalize" color={statusColorMap[user.dob]} size="sm" variant="flat">
-                        {cellValue}
+                        {formatDate(cellValue)}
                     </Chip>
                 );
             case "gender":
-                return genderMap[cellValue];
+                return formatGender(user.gender);
             case "description":
                 return cellValue;
             case "actions":
                 return (
                     <div className="relative flex items-center gap-2">
                         <Tooltip content="Details">
-                            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                <EyeIcon />
+                            <span className="flex text-lg text-default-400 cursor-pointer active:opacity-50">
+                                <EyeIcon
+                                    onClick={() => handelShowProfile(user.id)}
+                                />
                             </span>
                         </Tooltip>
-                        <Tooltip content="Edit user">
-                            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                        <Tooltip content="Edit">
+                            <span className="flex text-lg text-default-400 cursor-pointer active:opacity-50">
                                 <EditIcon />
                             </span>
                         </Tooltip>
@@ -92,14 +109,17 @@ export default function UserManager() {
                         </TableColumn>
                     )}
                 </TableHeader>
-                <TableBody items={users}>
-                    {(item) => (
+                <TableBody items={userProfile}>
+                    {(item: any) => (
                         <TableRow key={item.id}>
                             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
                         </TableRow>
                     )}
                 </TableBody>
             </Table>
+            <div className="flex justify-center items-center">
+                <PaginationData />
+            </div>
         </>
     );
-}
+};

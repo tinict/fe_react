@@ -3,16 +3,16 @@ import * as _ from 'lodash';
 export class ProfileGetMapper {
     static toProfileGetMapper = (entity: any) => {
         return {
-            id: _.get(entity, 'Id'),
-            firstname: _.get(entity, 'Firstname'),
-            lastname: _.get(entity, 'Lastname'),
-            username: _.get(entity, 'Username'),
-            gender: _.get(entity, 'Gender'),
-            dob: _.get(entity, 'Dob'),
-            phone: _.get(entity, 'Phone'),
-            picture: _.get(entity, 'Picture'),
-            email: _.get(entity, 'Email'),
-            bio: _.get(entity, 'Bio'),
+            id: _.get(entity, 'id'),
+            firstname: _.get(entity, 'firstname'),
+            lastname: _.get(entity, 'lastname'),
+            username: _.get(entity, 'username'),
+            gender: _.get(entity, 'gender'),
+            dob: _.get(entity, 'dob'),
+            phone: _.get(entity, 'phone'),
+            picture: _.get(entity, 'picture'),
+            email: _.get(entity, 'email'),
+            bio: _.get(entity, 'bio'),
         };
-    }
+    };
 };
