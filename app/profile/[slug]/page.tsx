@@ -2,29 +2,36 @@
 
 import React, { useEffect, useState } from 'react';
 import ProfileBasic from '@/components/profiles/profilebasic';
-import { getProfile } from '@/common/api/sso/google/getProfile';
+import { getUserProfile } from '@/common/api/user/getUserProfile';
 
-type GetProfile = {
-    repo: {
-        gender: string;
-        dob: string;
-        phone: string;
-        location: string;
-        email: string;
-        bio: string;
-        picture: string;
+type GetUserProfile = {
+    id: string,
+    firstname: string,
+    lastname: string,
+    username: string,
+    gender: string,
+    dob: string,
+    phone: string,
+    email: string,
+    bio: string,
+};
+
+interface ProfileProps {
+    params: {
+        slug: string;
     };
 };
 
+export default function Page({ params }: ProfileProps) {
+    const [userProfile, setUserProfile] = useState<GetUserProfile | {}>({});
 
-const ProfilePage = () => {
-    const [userProfile, setUserProfile] = useState<GetProfile | {}>({});
-
-    /**
+    /** 
      * Call get profile by api getProfile, using login sso with Google
      */
     const fetchProfile = async () => {
-        const profile = await getProfile();
+        const profile = await getUserProfile({
+            id: params.slug
+        });
         if (profile) {
             console.log(profile);
             setUserProfile(profile?.props);
@@ -41,5 +48,3 @@ const ProfilePage = () => {
         </section>
     );
 };
-
-export default ProfilePage;

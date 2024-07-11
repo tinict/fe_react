@@ -6,9 +6,9 @@ export default function Search() {
     return (
         <div>
             <Input
-                label="Search"
                 isClearable
                 radius="lg"
+                className="w-[300]"
                 classNames={{
                     label: "text-black/50 dark:text-white/90",
                     input: [
