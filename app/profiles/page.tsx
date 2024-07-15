@@ -1,7 +1,8 @@
 "use client";
 
-import { getAllProfile } from "@/common/api/user/getAllProfile";
+import { getAllProfile } from "@/common/api/user/profiles.get";
 import UserManager from "@/components/tables/listUser";
+import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/breadcrumbs";
 import { Button } from "@nextui-org/button";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -32,13 +33,19 @@ export default function Home() {
 
     return (
         <section className="flex flex-col gap-4">
+            <Breadcrumbs>
+                <BreadcrumbItem>Home</BreadcrumbItem>
+                <BreadcrumbItem>List User</BreadcrumbItem>
+            </Breadcrumbs>
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold text-gray-800">User List</h1>
                 <Button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-200">
                     Add User
                 </Button>
             </div>
-            <UserManager listProfile={userListProfile} />
+            <UserManager
+                listProfile={userListProfile}
+            />
         </section>
     );
 };

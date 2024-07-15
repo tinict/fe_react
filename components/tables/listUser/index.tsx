@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
     Table,
     TableHeader,
@@ -11,14 +11,25 @@ import {
     User,
     Chip,
     Tooltip,
-    getKeyValue
+    Button,
+    ModalContent,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    useDisclosure,
+    Divider
 } from "@nextui-org/react";
 import { EyeIcon } from "../../icons/EyeIcon";
 import { EditIcon } from "../../icons/EditIcon";
 import Search from "@/components/search";
 import { formatDate, formatFullName, formatGender, formatPhone } from "@/helpers/validate";
 import PaginationData from "@/components/pagination";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import EditProfile from "@/components/edit_profile";
+import { DeleteIcon } from "@/components/icons/DeleteIcon";
+import { deleteUserProfile } from "@/common/api/user/profile.delete";
+import { getAllProfile } from "@/common/api/user/getAllProfile";
 
 const columns = [
     { name: "NAME", uid: "name" },
@@ -45,12 +56,43 @@ export default function UserManager({ ...props }) {
     const { repo } = props.listProfile;
     const userProfile = repo?.list?.data || [];
     const router = useRouter();
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [profile, setProfile] = useState<object>({});
+    const searchParams = useSearchParams();
+    const page: number = Number(searchParams.get('p')) || 1;
 
-    const handelShowProfile = (id: string) => {
+    const handleShowProfile = (id: string, user: any) => {
         router.push(`/profile/${id}`);
+        setProfile(user);
     };
 
-    const renderCell = React.useCallback((user: any, columnKey: any) => {
+    const handleEditProfile = (user: any) => {
+        onOpen();
+        setProfile(user);
+    };
+
+    const handleDeleteProfile = (id: string) => {
+        deleteUserProfile({
+            id
+        });
+    };
+
+    // const fetchUserProfilesData = async () => {
+    //     try {
+    //         const profiles = await getAllProfile({
+    //             offset: (page - 1) * 10,
+    //             limit: 10,
+    //         });
+    //         if (profiles) {
+    //             console.log(profiles)
+    //             setProfile(profiles?.props);
+    //         }
+    //     } catch (error: any) {
+    //         console.log(error);
+    //     }
+    // };
+
+    const renderCell = useCallback((user: any, columnKey: any) => {
         const cellValue = user[columnKey];
 
         switch (columnKey) {
@@ -79,16 +121,25 @@ export default function UserManager({ ...props }) {
             case "actions":
                 return (
                     <div className="relative flex items-center gap-2">
-                        <Tooltip content="Details">
+                        <Tooltip content="View Profile">
                             <span className="flex text-lg text-default-400 cursor-pointer active:opacity-50">
                                 <EyeIcon
-                                    onClick={() => handelShowProfile(user.id)}
+                                    onClick={() => handleShowProfile(user.id, user)}
                                 />
                             </span>
                         </Tooltip>
                         <Tooltip content="Edit">
                             <span className="flex text-lg text-default-400 cursor-pointer active:opacity-50">
-                                <EditIcon />
+                                <EditIcon
+                                    onClick={() => handleEditProfile(user)}
+                                />
+                            </span>
+                        </Tooltip>
+                        <Tooltip content="Delete">
+                            <span className="flex text-lg text-default-400 cursor-pointer active:opacity-50">
+                                <DeleteIcon
+                                    onClick={() => handleDeleteProfile(user.id)}
+                                />
                             </span>
                         </Tooltip>
                     </div>
@@ -96,7 +147,7 @@ export default function UserManager({ ...props }) {
             default:
                 return cellValue;
         }
-    }, []);
+    }, [handleShowProfile, onOpen]);
 
     return (
         <>
@@ -120,6 +171,26 @@ export default function UserManager({ ...props }) {
             <div className="flex justify-center items-center">
                 <PaginationData />
             </div>
+            <Modal
+                backdrop="opaque"
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                radius="lg"
+                size="2xl"
+                classNames={{
+                    body: "py-6",
+                    backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
+                    // base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]",
+                    header: "border-b-[1px] border-[#292f46]",
+                    footer: "border-t-[1px] border-[#292f46]",
+                    closeButton: "hover:bg-white/5 active:bg-white/10",
+                }}
+                className='w-[600px]'
+            >
+                <ModalContent>
+                    <EditProfile data={profile} />
+                </ModalContent>
+            </Modal>
         </>
     );
-};
+}

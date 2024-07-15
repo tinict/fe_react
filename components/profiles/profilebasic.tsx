@@ -1,18 +1,19 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Avatar, Spacer, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter} from '@nextui-org/react';
+import { Card, Button, Avatar, Spacer, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react';
 import AvatarBordered from '../avatars/bordered';
 import { formatDate, formatFullName, formatGender, formatPhone } from '@/helpers/validate';
-import EditProfile from '../editprofile';
+import EditProfile from '../edit_profile';
+import { useRouter } from 'next/navigation';
 
 const ProfileBasic = ({ ...props }) => {
+    const { slug } = props
     const { repo } = props.profile;
-    const [statusEditProfile, setStatusEditProfile] = useState(false);
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const router = useRouter();
 
     const handleEditProfile = () => {
-        setStatusEditProfile(!statusEditProfile);
+        router.push(`${slug}/about_overview`);
     };
 
     return (
@@ -30,7 +31,6 @@ const ProfileBasic = ({ ...props }) => {
                     <Button
                         color="primary"
                         onClick={handleEditProfile}
-                        onPress={onOpen}
                     >
                         Update Profile
                     </Button>
@@ -72,32 +72,6 @@ const ProfileBasic = ({ ...props }) => {
                     </div>
                 </div>
             </Card >
-
-            {/* Component Card Edit Profile */}
-            <Modal
-                backdrop="opaque"
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                radius="lg"
-                size="2xl"
-                classNames={{
-                    body: "py-6",
-                    backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
-                    // base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]",
-                    header: "border-b-[1px] border-[#292f46]",
-                    footer: "border-t-[1px] border-[#292f46]",
-                    closeButton: "hover:bg-white/5 active:bg-white/10",
-                }}
-                className='w-[600px]'
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <EditProfile />
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
         </div >
     );
 };
