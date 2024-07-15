@@ -3,7 +3,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGooglePlusG } from '@fortawesome/free-brands-svg-icons'
 import { Input, Button, Spacer } from '@nextui-org/react';
-import { redirectGoogleAuth } from '@/common/api/sso/google/redirectGoogleAuth';
+import { RedirectGoogleAuth } from '@/common/api/sso/google/auth.redirect';
 
 const FormLogin = () => {
     return (
@@ -51,7 +51,7 @@ const FormLogin = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}
-                    onClick={redirectGoogleAuth}
+                    onClick={RedirectGoogleAuth}
                 >
                     <FontAwesomeIcon icon={faGooglePlusG} color="white" fontSize="20px" />
                 </Button>

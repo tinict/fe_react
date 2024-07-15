@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
-import EditProfile from "../editprofile";
+import EditProfile from "../edit_profile";
 
 export default function EditProfileModal() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -23,11 +23,7 @@ export default function EditProfileModal() {
                 className='w-[600px]'
             >
                 <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <EditProfile />
-                        </>
-                    )}
+                    <EditProfile />
                 </ModalContent>
             </Modal>
         </>

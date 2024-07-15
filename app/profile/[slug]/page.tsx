@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import ProfileBasic from '@/components/profiles/profilebasic';
-import { getUserProfile } from '@/common/api/user/getUserProfile';
+import { getUserProfile } from '@/common/api/user/profile.get';
+import { BreadcrumbItem, Breadcrumbs } from '@nextui-org/breadcrumbs';
 
 type GetUserProfile = {
     id: string,
@@ -44,7 +45,7 @@ export default function Page({ params }: ProfileProps) {
 
     return (
         <section className="flex flex-col gap-4 py-8 md:py-10">
-            <ProfileBasic profile={userProfile} />
+            <ProfileBasic profile={userProfile} slug={params.slug} />
         </section>
     );
 };

@@ -1,1 +1,1 @@
-export * from './genderMap';
+export * from './gender';
