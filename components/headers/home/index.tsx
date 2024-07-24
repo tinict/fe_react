@@ -7,11 +7,8 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-o
 import {
     Navbar as NextUINavbar,
     NavbarContent,
-    NavbarMenu,
-    NavbarMenuToggle,
     NavbarBrand,
     NavbarItem,
-    NavbarMenuItem,
 } from "@nextui-org/navbar";
 import { Avatar, User } from "@nextui-org/react";
 import Link from "next/link";
@@ -36,36 +33,28 @@ export const HeaderHome = () => {
                     </NavbarBrand>
                     <NavbarContent className="hidden sm:flex gap-4" justify="center">
                         <NavbarItem>
-                            <Link color="foreground" href="#">
+                            <Link color="foreground" href="#" className='font-manrope text-[14px]'>
                                 Home
                             </Link>
                         </NavbarItem>
                         <NavbarItem>
-                            <Link color="foreground" href="#">
-                                ListUser
+                            <Link color="foreground" href="#" className='font-manrope text-[14px]'  >
+                                List Profile
                             </Link>
                         </NavbarItem>
                     </NavbarContent>
                 </NavbarContent>
                 <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                    <NavbarItem className="h-8 w-8 p-1">
+                    <NavbarItem className="flex h-[22px] w-[22px] items-center justify-center">
                         <FontAwesomeIcon
                             icon={faBell}
-                            className="text-gray-700 w-ful h-full"
-                            style={{
-                                color: 'rgb(104, 101, 131)',
-                                cursor: "pointer",
-                            }}
+                            className="text-gray-700 w-ful h-full text-[rgb(104,101,131)] cursor-pointer"
                         />
                     </NavbarItem>
-                    <NavbarItem className="h-8 w-8 p-1">
+                    <NavbarItem className="flex h-[22px] w-[22px] items-center justify-center">
                         <FontAwesomeIcon
                             icon={faGear}
-                            className="text-gray-700 w-ful h-full"
-                            style={{
-                                color: 'rgb(104, 101, 131)',
-                                cursor: "pointer",
-                            }}
+                            className="text-gray-700 w-ful h-full text-[rgb(104,101,131)] cursor-pointer"
                         />
                     </NavbarItem>
                     <NavbarItem>

@@ -1,5 +1,7 @@
 "use client";
 
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown";
+import { User } from "@nextui-org/react";
 import { Metadata } from "next";
 
 // export const metadata: Metadata = {
@@ -20,7 +22,16 @@ export default function Layout({
 }) {
   return (
     <>
-      {children}
+      <div className="py-[16px]">
+        <section>
+          <h1 className="font-lexend text-[24px] leading-[36px] font-semibold text-[#171A1F]">
+            Profile Details
+          </h1>
+        </section>
+        <section>
+          {children}
+        </section>
+      </div>
     </>
   )
 };
