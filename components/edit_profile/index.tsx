@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
-    Card, CardBody, Divider, Button, useDisclosure, Modal, ModalContent, ModalHeader
+    Card, CardBody, Divider, Button, useDisclosure, Modal, ModalContent, ModalHeader,
+    CardHeader
 } from "@nextui-org/react";
 import AvatarBordered from "../avatars/bordered";
 import { PersonalProfile } from "./personal";
@@ -28,6 +29,9 @@ export default function EditProfile({ ...props }) {
     return (
         <>
             <Card className="max-w-[600px]">
+                <CardHeader>
+                    Edit profile
+                </CardHeader>
                 <CardBody>
                     <div>
                         <div className="flex justify-between py-2 items-center">
