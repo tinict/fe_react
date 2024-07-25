@@ -29,7 +29,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import EditProfile from "@/components/edit_profile";
 import { DeleteIcon } from "@/components/icons/DeleteIcon";
 import { deleteUserProfile } from "@/common/api/user/profile.delete";
-import { getAllProfile } from "@/common/api/user/getAllProfile";
+// import { getAllProfile } from "@/common/api/user/getAllProfile";
 
 const columns = [
     { name: "NAME", uid: "name" },
@@ -155,7 +155,10 @@ export default function UserManager({ ...props }) {
             <Table aria-label="Example table with custom cells">
                 <TableHeader columns={columns}>
                     {(column) => (
-                        <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
+                        <TableColumn
+                            key={column.uid}
+                            align={column.uid === "actions" ? "center" : "start"}
+                        >
                             {column.name}
                         </TableColumn>
                     )}
@@ -180,7 +183,6 @@ export default function UserManager({ ...props }) {
                 classNames={{
                     body: "py-6",
                     backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
-                    // base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]",
                     header: "border-b-[1px] border-[#292f46]",
                     footer: "border-t-[1px] border-[#292f46]",
                     closeButton: "hover:bg-white/5 active:bg-white/10",
@@ -193,4 +195,4 @@ export default function UserManager({ ...props }) {
             </Modal>
         </>
     );
-}
+};
