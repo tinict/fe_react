@@ -5,7 +5,7 @@ import { getUserProfile } from '@/common/api/user/profile.get';
 import { Button, Listbox, ListboxItem, ListboxSection, Modal, ModalContent, useDisclosure, User } from '@nextui-org/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { formatFullName, formatGender, formatPhone } from '@/helpers/validate';
+import { formatDate, formatFullName, formatGender, formatPhone } from '@/helpers/validate';
 import EditProfile from '@/components/edit_profile';
 
 type GetUserProfile = {
@@ -19,6 +19,7 @@ type GetUserProfile = {
         phone: string,
         email: string,
         bio: string,
+        picture: string
     }
 };
 
@@ -56,6 +57,10 @@ export default function Page({ params }: ProfileProps) {
         setProfile(user);
     };
 
+    const handleProfileUpdate = (updatedProfile: any) => {
+        setUserProfile({ repo: updatedProfile });
+    };
+
     return (
         // <section className="flex flex-col gap-4 py-8 md:py-10">
         //     <ProfileBasic profile={userProfile} slug={params.slug} />
@@ -67,7 +72,7 @@ export default function Page({ params }: ProfileProps) {
                     avatarProps={{
                         size: "lg",
                         isBordered: false,
-                        src: `${userProfile?.repo?.picture}`,
+                        src: userProfile?.repo?.picture || '',
                     }}
                     className="transition-transform"
                     description={formatFullName(userProfile?.repo?.lastname, userProfile?.repo?.firstname)}
@@ -111,7 +116,7 @@ export default function Page({ params }: ProfileProps) {
                                         </li>
                                         <li className='flex items-center justify-between h-[24px]'>
                                             <span className='w-1/2'>Birthday</span>
-                                            <span className="w-[100px] text-left">{formatPhone(userProfile?.repo?.dob)}</span>
+                                            <span className="w-[100px] text-left">{formatDate(userProfile?.repo?.dob)}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -142,10 +147,10 @@ export default function Page({ params }: ProfileProps) {
                                 <span className='text-[#171A1FFF]'>Edit</span>
                             </Button>
                         </div>
-                        <div className='flex'>
-                            <div className='flex w-1/4 mr-32'>
+                        <div className='flex w-full'>
+                            <div className='flex w-full'>
                                 <div className='w-full'>
-                                    <p className="w-[100px] text-left">{userProfile?.repo?.bio}</p>
+                                    <p className='font-[Lexend] text-[14px] text-[#686583] w-full'>{userProfile?.repo?.bio}</p>
                                 </div>
                             </div>
                         </div>
@@ -173,7 +178,7 @@ export default function Page({ params }: ProfileProps) {
                 className='w-[600px]'
             >
                 <ModalContent>
-                    <EditProfile data={profile} />
+                    <EditProfile data={profile} onProfileUpdate={handleProfileUpdate} />
                 </ModalContent>
             </Modal>
         </>

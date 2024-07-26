@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-    Card, CardBody, Divider, Button, useDisclosure, Modal, ModalContent, ModalHeader,
-    CardHeader
+    Card, CardBody, Divider, Button, useDisclosure, Modal, ModalContent, ModalHeader, CardHeader
 } from "@nextui-org/react";
 import AvatarBordered from "../avatars/bordered";
 import { PersonalProfile } from "./personal";
@@ -12,7 +11,9 @@ export default function EditProfile({ ...props }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [isOpenInfo, setOpenInfo] = useState(false);
     const [isOpenBio, setOpenBio] = useState(false);
-    const { data } = props;
+    const [data, setData] = useState(props.data);
+    const { onProfileUpdate } = props;
+
 
     const handleEditInfo = () => {
         setOpenInfo(true);
@@ -24,6 +25,16 @@ export default function EditProfile({ ...props }) {
         setOpenInfo(false);
         setOpenBio(true);
         onOpen();
+    };
+
+    const handleClose = () => {
+        onOpenChange();
+    };
+
+    const handleSave = (newData: any) => {
+        setData(newData);
+        onOpenChange();
+        onProfileUpdate(newData);
     };
 
     return (
@@ -74,10 +85,6 @@ export default function EditProfile({ ...props }) {
                             <span>{formatPhone(data?.phone)}</span>
                         </div>
                         <div className="flex justify-between py-2">
-                            <span className="text-sm text-gray-500">Location:</span>
-                            <span>Test</span>
-                        </div>
-                        <div className="flex justify-between py-2">
                             <span className="text-sm text-gray-500">Email:</span>
                             <span>{data?.email}</span>
                         </div>
@@ -105,17 +112,32 @@ export default function EditProfile({ ...props }) {
                 </CardBody>
             </Card>
             {isOpen && (
-                <Modal isOpen={true} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+                <Modal
+                    isOpen={true}
+                    onOpenChange={onOpenChange}
+                    isDismissable={false}
+                    isKeyboardDismissDisabled={true}
+                >
                     <ModalContent>
                         <>
                             <ModalHeader>
                                 Edit Profile
                             </ModalHeader>
                             {
-                                isOpenInfo && <PersonalProfile data={data} />
+                                isOpenInfo &&
+                                <PersonalProfile
+                                    data={data}
+                                    onClose={handleClose}
+                                    onSave={handleSave}
+                                />
                             }
                             {
-                                isOpenBio && <Bio data={data} />
+                                isOpenBio &&
+                                <Bio
+                                    data={data}
+                                    onClose={handleClose}
+                                    onSave={handleSave}
+                                />
                             }
                         </>
                     </ModalContent>
@@ -123,4 +145,4 @@ export default function EditProfile({ ...props }) {
             )}
         </>
     );
-}
+};

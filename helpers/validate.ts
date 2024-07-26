@@ -33,10 +33,14 @@ export const formatGender = (gender: number): string => {
  * @returns 
  */
 export const formatDate = (date: string): string => {
-    if(!date) return 'N.A';
-    let newDate = new Date(date).toUTCString();
-    return newDate;
-};
+    if (!date) return 'N.A';
+    const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    };
+    return new Intl.DateTimeFormat('en-US', options).format(new Date(date));
+}
 
 /**
  * 
@@ -45,7 +49,7 @@ export const formatDate = (date: string): string => {
  * @returns 
  */
 export const formatFullName = (firstName: string, lastName: string): string => {
-    if (firstName && lastName) 
+    if (firstName && lastName)
         return firstName.trim() + ' ' + lastName.trim();
     else if (!firstName && lastName)
         return lastName.trim();

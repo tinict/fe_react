@@ -33,12 +33,12 @@ export const HeaderHome = () => {
                     </NavbarBrand>
                     <NavbarContent className="hidden sm:flex gap-4" justify="center">
                         <NavbarItem>
-                            <Link color="foreground" href="#" className='font-manrope text-[14px]'>
+                            <Link color="foreground" href="/" className='font-manrope text-[14px]'>
                                 Home
                             </Link>
                         </NavbarItem>
                         <NavbarItem>
-                            <Link color="foreground" href="#" className='font-manrope text-[14px]'  >
+                            <Link color="foreground" href="/profiles" className='font-manrope text-[14px]'  >
                                 List Profile
                             </Link>
                         </NavbarItem>
