@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export const Bio = ({ ...props }) => {
 
-    const { data } = props;
+    const { data, onClose, onSave } = props;
     console.log("bio: ", data);
     const [editUser, setEditUser] = useState<any>(data);
     const router = useRouter();
@@ -24,8 +24,9 @@ export const Bio = ({ ...props }) => {
             body
         })
             .then(() => {
-                router.push('/profiles');
-                alert("Updated Successfully!");
+                router.push(`/profile/${id}`);
+                onSave({ ...editUser });
+                onClose();
             })
     };
 

@@ -4,10 +4,12 @@ import { Input } from "@nextui-org/input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Toast } from "../toast";
+import { Radio, RadioGroup } from "@nextui-org/react";
+import { formatDate } from "@/helpers/validate";
 
 export const PersonalProfile = ({ ...props }) => {
 
-    const { data } = props;
+    const { data, onClose, onSave } = props;
     const [editUser, setEditUser] = useState<any>(data);
     const router = useRouter();
     const [isToast, setToast] = useState(false);
@@ -18,15 +20,24 @@ export const PersonalProfile = ({ ...props }) => {
      */
     const handleUpdateProfile = async ({ ...props }) => {
         const { id, body } = props;
-        
+
         await updateUserProfile({
             id,
             body
         })
             .then(() => {
-                router.push('/profiles');
-                alert("Updated Successfully!");
+                router.push(`/profile/${id}`);
+                onSave({ ...editUser });
+                onClose();
             })
+    };
+
+    const formatDateToYYYYMMDD = (dateString: string) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     };
 
     return (
@@ -34,7 +45,7 @@ export const PersonalProfile = ({ ...props }) => {
             <div className="flex flex-col gap-4 p-4">
                 <Input
                     label="First Name"
-                    defaultValue={editUser?.firstname} 
+                    defaultValue={editUser?.firstname}
                     onChange={(e) => setEditUser({ ...editUser, firstname: e.target.value })}
                 />
                 <Input
@@ -45,7 +56,7 @@ export const PersonalProfile = ({ ...props }) => {
                 <Input
                     label="Date of Birth"
                     type="date"
-                    defaultValue={editUser?.dob}
+                    defaultValue={formatDateToYYYYMMDD(editUser?.dob)}
                     onChange={(e) => setEditUser({ ...editUser, dob: e.target.value })}
                 />
                 <Input
@@ -53,11 +64,20 @@ export const PersonalProfile = ({ ...props }) => {
                     defaultValue={editUser?.phone}
                     onChange={(e) => setEditUser({ ...editUser, phone: e.target.value })}
                 />
-                <Input
-                    label="Location"
-                    defaultValue={editUser?.location}
-                    onChange={(e) => setEditUser({ ...editUser, location: e.target.value })}
-                />
+                <div>
+                    <span className="text-sm text-gray-500 py-4">Gender:</span>
+                    <div>
+                        <RadioGroup
+                            defaultValue={editUser?.gender + ''}
+                            onChange={(e) => setEditUser({ ...editUser, gender: e.target.value })}
+                            className="flex flex-row"
+                        >
+                            <Radio value='1'>Male</Radio>
+                            <Radio value='2'>Female</Radio>
+                            <Radio value='3'>Other</Radio>
+                        </RadioGroup>
+                    </div>
+                </div>
                 <Input
                     label="Email"
                     type="email"
