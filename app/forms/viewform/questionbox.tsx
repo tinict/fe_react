@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader, Radio, RadioGroup } from '@nextui-org/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckToSlot } from '@fortawesome/free-solid-svg-icons';
+import { faCheckToSlot, faCircleCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const QuestionBox = ({ ...props }) => {
     const { questions } = props;
@@ -12,6 +12,7 @@ const QuestionBox = ({ ...props }) => {
     const [isClearButton, setClearButton] = useState(false);
     const [isDoneButton, setDoneButton] = useState(false);
     const [isExplained, setExplained] = useState(false);
+    const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
 
     const handleSelected = (item: any) => {
         setSelected(true);
@@ -23,33 +24,44 @@ const QuestionBox = ({ ...props }) => {
     const handleClear = () => {
         setSelected(false);
         setSelectedAnswer('M');
+        setCheckAnswer(null);
+        setShowCorrectAnswer(false);
+        setClearButton(false);
+        setDoneButton(false);
+        setExplained(false);
     };
 
     const compareResult = () => {
         const { results } = questions;
-
-        setCheckAnswer(results?.includes(selectedAnswer));
+        const isCorrect = results?.includes(selectedAnswer);
+        setCheckAnswer(isCorrect);
+        if (!isCorrect) {
+            setShowCorrectAnswer(true);
+        }
         setClearButton(false);
         setDoneButton(false);
-        setExplained(true)
+        setExplained(true);
     };
 
-    const getColor = () => {
+    const getColor = (id: string) => {
         if (checkAnswer === null) {
             return 'primary';
-        } else if (checkAnswer === true) {
+        } else if (questions.results.includes(id)) {
             return 'success';
-        } else {
+        } else if (id === selectedAnswer) {
             return 'danger';
+        } else {
+            return 'primary';
         }
     };
 
     const handleDisableRadio = (id: any) => {
         if (id !== selectedAnswer) {
-            if (checkAnswer || checkAnswer === false) return true;
+            if (checkAnswer || checkAnswer === false) {
+                return true;
+            }
         }
-        else
-            return false;
+        else return false;
     };
 
     return (
@@ -67,16 +79,24 @@ const QuestionBox = ({ ...props }) => {
                     className="space-y-2"
                 >
                     {questions.answers.map((item: any, index: number) => (
-                        <Radio
-                            id={item.id}
-                            value={item.id}
-                            key={index}
-                            onClick={() => handleSelected(item)}
-                            color={getColor()}
-                            isDisabled={handleDisableRadio(item.id)}
-                        >
-                            {item.value}
-                        </Radio>
+                        <div key={index} className="flex justify-between items-center space-x-2">
+                            <Radio
+                                id={item.id}
+                                value={item.id}
+                                onClick={() => handleSelected(item)}
+                                color={getColor(item.id)}
+                                isDisabled={handleDisableRadio(item.id)}
+                            >
+                                {item.value}
+                            </Radio>
+                            {showCorrectAnswer && questions.results.includes(item.id) && (
+                                <FontAwesomeIcon icon={faCircleCheck} className="text-gray-500" />
+                            )}
+                            {selectedAnswer !== 'M' && showCorrectAnswer && !questions.results.includes(item.id) && (
+
+                                <FontAwesomeIcon icon={faXmark} className="text-red-500" />
+                            )}
+                        </div>
                     ))}
                 </RadioGroup>
             </fieldset>
@@ -84,39 +104,33 @@ const QuestionBox = ({ ...props }) => {
                 <div className="mt-4">
                     <div className="border-t border-gray-300 my-4"></div>
                     <div className="flex justify-end space-x-4">
-                        {
-                            isClearButton && (
-                                <button
-                                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 focus:outline-none"
-                                    onClick={handleClear}
-                                >
-                                    Clear Selection
-                                </button>
-                            )
-                        }
-                        {
-                            isDoneButton && (
-                                <button
-                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
-                                    onClick={compareResult}
-                                >
-                                    Done
-                                </button>
-                            )
-                        }
-                        {
-                            isExplained && (
-                                <Card className="py-2 w-full shadow-none">
-                                    <CardHeader className="flex items-start p-2 space-x-2">
-                                        <FontAwesomeIcon icon={faCheckToSlot} className="text-gray-500 mb-2" />
-                                        <p className="text-xs uppercase font-bold text-gray-700">Explained</p>
-                                    </CardHeader>
-                                    <CardBody className="overflow-visible py-2 px-4 text-gray-600">
-                                        {questions.explain}
-                                    </CardBody>
-                                </Card>
-                            )
-                        }
+                        {isClearButton && (
+                            <button
+                                className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 focus:outline-none"
+                                onClick={handleClear}
+                            >
+                                Clear Selection
+                            </button>
+                        )}
+                        {isDoneButton && (
+                            <button
+                                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
+                                onClick={compareResult}
+                            >
+                                Done
+                            </button>
+                        )}
+                        {isExplained && (
+                            <Card className="py-2 w-full shadow-none">
+                                <CardHeader className="flex items-start p-2 space-x-2">
+                                    <FontAwesomeIcon icon={faCheckToSlot} className="text-gray-500 mb-2" />
+                                    <p className="text-xs uppercase font-bold text-gray-700">Explained</p>
+                                </CardHeader>
+                                <CardBody className="overflow-visible py-2 px-4 text-gray-600">
+                                    {questions.explain}
+                                </CardBody>
+                            </Card>
+                        )}
                     </div>
                 </div>
             )}
