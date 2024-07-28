@@ -52,7 +52,10 @@ export default function Page() {
             {
                 questions.map((item: Question, index: number) => {
                     return (
-                        <QuestionBox key={index} questions={item} />
+                        <QuestionBox
+                            key={index}
+                            questions={item}
+                        />
                     )
                 })
             }
