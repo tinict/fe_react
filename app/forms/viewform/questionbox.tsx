@@ -34,6 +34,7 @@ const QuestionBox = ({ ...props }) => {
     const compareResult = () => {
         const { results } = questions;
         const isCorrect = results?.includes(selectedAnswer);
+        
         setCheckAnswer(isCorrect);
         if (!isCorrect) {
             setShowCorrectAnswer(true);
