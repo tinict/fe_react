@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import QuestionBox from "./questionbox";
-import { getCategory } from "@/common/api/form/categories.get";
+import { GetQuiz } from "@/common/api/form/quiz.get";
 
 interface Answer {
     id: string;
@@ -34,8 +34,8 @@ interface GetCategory {
 export default function Page() {
     const [questions, setQuestions] = useState<Question[] | []>([]);
 
-    const fetchCategory = async () => {
-        const data = await getCategory();
+    const fetchGetQuiz = async () => {
+        const data = await GetQuiz();
 
         if (data) {
             console.log(data);
@@ -44,7 +44,7 @@ export default function Page() {
     };
 
     useEffect(() => {
-        fetchCategory();
+        fetchGetQuiz();
     }, []);
 
     return (
