@@ -22,10 +22,10 @@ interface Category {
     questions: Question[];
 };
 
-export const GetQuiz = async (id: string): Promise<{ props: { repo: Category } } | null> => {
+export const GetQuiz = async (): Promise<{ props: { repo: Category } } | null> => {
     const authorization = Cookies.get('client_token');
 
-    const res = await axios.get(`https://api.mockfly.dev/mocks/2c27f58b-dd2a-48b3-abef-a457b719ee95/api/v1/forms/${id}`, {
+    const res = await axios.get(`https://api.mockfly.dev/mocks/2c27f58b-dd2a-48b3-abef-a457b719ee95/api/v1/forms/mathematics-category`, {
         headers: { authorization }
     })
         .catch(function (error) {

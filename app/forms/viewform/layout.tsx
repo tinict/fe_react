@@ -1,8 +1,8 @@
 "use client";
 
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown";
 import { User } from "@nextui-org/react";
 import { Metadata } from "next";
-import { HeadQuiz } from "../../../head-quiz";
 
 // export const metadata: Metadata = {
 //   title: {
@@ -22,11 +22,8 @@ export default function Layout({
 }) {
   return (
     <>
-      <section className="bg-[rgb(255,255,255)] flex flex-col justify-center w-full">
-        <HeadQuiz />
-        <section className="flex justify-center">
-          {children}
-        </section>
+      <section className="bg-[rgb(255,255,255)] flex justify-center">
+        {children}
       </section>
     </>
   )
