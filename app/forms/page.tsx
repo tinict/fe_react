@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GetCategories } from "@/common/api/form/categories.get";
+import { useRouter } from 'next/navigation';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Category {
     id: number;
@@ -12,6 +14,8 @@ interface Category {
 
 export default function Page() {
     const [categories, setCategories] = useState<Category[] | []>([]);
+    const router = useRouter();
+    let genUUIDV4 = uuidv4();
 
     const fetchGetCategories = async () => {
         const data = await GetCategories();
@@ -26,6 +30,11 @@ export default function Page() {
         fetchGetCategories();
     }, []);
 
+    const redirectEdit = (id: string) => {
+        router.push(`/forms/q/${id}/edit`);
+    };
+    
+
     return (
         <section className="w-full">
             <div className="p-4">
@@ -35,20 +44,25 @@ export default function Page() {
                 <div className="flex flex-wrap">
                     <div
                         className="mr-[19px] mb-[24px] cursor-pointer"
+                        onClick={() => redirectEdit(genUUIDV4)}
                     >
                         <div className="w-[171px] h-[128px] shadow-[rgba(0,0,0,0.16)_0px_1px_4px] flex flex-column items-center justify-center">
                             <div className="w-[100px] h-[100px] flex items-center justify-center">
-                                <FontAwesomeIcon icon={faPlus} className="text-[50px] text-blue-500" />
+                                <FontAwesomeIcon
+                                    icon={faPlus}
+                                    className="text-[50px] text-blue-500"
+                                />
                             </div>
                         </div>
                         <div className="mt-2">
                             <p className="text-[14px] text-gray-400">Create quiz blank</p>
                         </div>
                     </div>
-                    {categories.map((category: any, index: number) => (
+                    {categories?.map((category: any, index: number) => (
                         <div
                             key={index}
                             className="mr-[19px] mb-[24px] cursor-pointer"
+                            onClick={() => redirectEdit(category?.id)}
                         >
                             <div className="w-[171px] h-[128px] shadow-[rgba(0,0,0,0.16)_0px_1px_4px] p-2 flex flex-column items-center justify-center">
                                 <div className="h-[100px] w-[100px]">
@@ -60,7 +74,11 @@ export default function Page() {
                                 </div>
                             </div>
                             <div className="mt-2">
-                                <p className="text-[14px] text-gray-400">{category?.name}</p>
+                                <p
+                                    className="text-[14px] text-gray-400"
+                                >
+                                    {category?.name}
+                                </p>
                             </div>
                         </div>
                     ))}

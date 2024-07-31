@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Button, Card, CardBody, CardHeader, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Radio, RadioGroup, Switch } from '@nextui-org/react';
+import React, { useEffect, useState } from 'react';
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input } from '@nextui-org/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckToSlot, faCircle, faCircleCheck, faCirclePlus, faClipboardList, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faClipboardList, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const EditBox = ({ ...props }) => {
-    const { newbox, removebox } = props;
-
+    const { ques, newbox, removebox } = props;
     const [count, setCount] = useState<number>(1);
+    const [contentQues, setContentQuest] = useState<[]>([]);
     const [options, setOptions] = useState([
         {
             id: count,
@@ -28,6 +28,11 @@ const EditBox = ({ ...props }) => {
         );
     };
 
+    useEffect(() => {
+        setContentQuest(ques);
+        setOptions(ques.answers)
+    }, []);
+
     return (
         <div
             className="group bg-white p-6 rounded-lg shadow-[rgba(0,0,0,0.05)_0px_0px_0px_1px,rgb(209,213,219)_0px_0px_0px_1px_inset] w-full mb-[16px] relative"
@@ -41,6 +46,7 @@ const EditBox = ({ ...props }) => {
                         type="text"
                         variant={'underlined'}
                         label="Question"
+                        value={contentQues?.name}
                     />
                 </div>
                 <div className='w-[215px]'>
@@ -102,7 +108,7 @@ const EditBox = ({ ...props }) => {
                                             type="text"
                                             variant={'underlined'}
                                             label={`Option ${option.id}`}
-                                            value={option.option}
+                                            value={option.value}
                                             onChange={(e) => {
                                                 const newOptions = options.map(opt =>
                                                     opt.id === option.id ? { ...opt, option: e.target.value } : opt
@@ -159,6 +165,7 @@ const EditBox = ({ ...props }) => {
                                 type="text"
                                 variant={'underlined'}
                                 label="Answers"
+                                value={contentQues?.results}
                             />
                         </div>
                     </button>
