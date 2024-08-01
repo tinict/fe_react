@@ -1,9 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Question from "./question";
 import { GetQuiz } from "@/common/api/form/quiz.get";
+import Question from "./question";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
+/**
+ * Common
+ */
 interface Answer {
     id: string;
     value: string;
@@ -18,32 +23,31 @@ interface Question {
     explain: string;
 };
 
-interface Category {
-    id: number;
-    name: string;
-    questions: Question[];
-};
-
-interface GetCategory {
-    props?: {
-        repo?: Category;
-    };
-};
-
 export default function Page() {
-    const [questions, setQuestions] = useState<Question[] | []>([]);
+    const [questions, setQuestions] = useState<Question[]>([]);
+    const pathname = usePathname();
 
     const fetchGetQuiz = async (id: any) => {
         const data = await GetQuiz(id);
+        if (data) 
+            setQuestions(data?.props?.repo?.questions);
+    };
 
-        if (data) {
-            console.log(data);
-            setQuestions(data.props.repo.questions)
-        }
+    /**
+     * common
+     */
+    const splitPath = (url: string) => {
+        const regex = /forms\/q\/([^\/]+)\/edit/;
+
+        const match = url.match(regex);
+        const slug = match ? match[1] : null;
+
+        return slug;
     };
 
     useEffect(() => {
-        fetchGetQuiz('a3833e4f-dc0f-4fe9-9c76-038382dad0e7');
+        let id = splitPath(pathname)
+        fetchGetQuiz(id);
     }, []);
 
     return (

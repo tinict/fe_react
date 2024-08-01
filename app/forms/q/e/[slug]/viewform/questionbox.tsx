@@ -3,6 +3,9 @@ import { Card, CardBody, CardHeader, Radio, RadioGroup } from '@nextui-org/react
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckToSlot, faCircleCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 
+/**
+ * common
+ */
 const QuestionBox = ({ ...props }) => {
     const { questions } = props;
 

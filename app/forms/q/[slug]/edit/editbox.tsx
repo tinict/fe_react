@@ -1,37 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input } from '@nextui-org/react';
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Radio, RadioGroup } from '@nextui-org/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus, faClipboardList, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
 
+/**
+ * Common
+ */
+interface Option {
+    id: string,
+    value: string,
+};
+
 const EditBox = ({ ...props }) => {
     const { ques, newbox, removebox } = props;
-    const [count, setCount] = useState<number>(1);
-    const [contentQues, setContentQuest] = useState<[]>([]);
-    const [options, setOptions] = useState([
-        {
-            id: count,
-            option: ''
-        }
-    ]);
+    const [contentQues, setContentQuest] = useState<string>('');
+    const [results, setResults] = useState<string[]>(['']);
+    const [explain, setExplain] = useState<string>('');
+    const [options, setOptions] = useState<Option[]>([]);
 
     const handleAddOption = () => {
-        setCount(count + 1);
-        setOptions([...options, {
-            id: count + 1,
-            option: ''
-        }]);
+        let count = options.length + 1;
+        setOptions(
+            [
+                ...options,
+                {
+                    id: count.toString(),
+                    value: ''
+                }
+            ]
+        );
     };
 
-    const handleRemoveOption = (id: number) => {
+    const handleRemoveOption = (id: string) => {
         setOptions(
             options.filter(option => option.id !== id)
         );
     };
 
     useEffect(() => {
-        setContentQuest(ques);
-        setOptions(ques.answers)
-    }, []);
+        setContentQuest(ques.name);
+        setOptions(ques.answers);
+        setResults(ques.results);
+        setExplain(ques.explain);
+    }, [removebox]);
 
     return (
         <div
@@ -46,7 +57,10 @@ const EditBox = ({ ...props }) => {
                         type="text"
                         variant={'underlined'}
                         label="Question"
-                        value={contentQues?.name}
+                        value={contentQues}
+                        onChange={(e) => {
+                            setContentQuest(e.target.value)
+                        }}
                     />
                 </div>
                 <div className='w-[215px]'>
@@ -63,7 +77,7 @@ const EditBox = ({ ...props }) => {
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <circle cx="12" cy="12" r="6" fill="currentColor"></circle>
                                 </svg>
-                                Multiple-choice
+                                <span>Multiple-choice</span>
                                 <svg
                                     className="-mr-1 ml-2 h-5 w-5"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -89,45 +103,59 @@ const EditBox = ({ ...props }) => {
                 </div>
             </div>
             <div className="mt-6 mb-4">
-                {
-                    (
-                        options.map((option: any, index: number) => {
-                            return (
-                                <div className="flex items-center w-full space-x-4" key={index}>
-                                    <svg
-                                        className="w-6 h-6 text-gray-400"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg"
+                <RadioGroup
+                    orientation="vertical"
+                    aria-label="shirt-size"
+                    name="shirt-size"
+                    className="space-y-2"
+                    value={results[0]}
+                    onChange={(e) => setResults([e.target.value])}
+                >
+                    {
+                        (
+                            options.map((option: any, index: number) => {
+                                return (
+                                    <div
+                                        className="flex items-center w-full space-x-2"
+                                        key={index}
                                     >
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                    </svg>
-                                    <div className="flex-grow">
+                                        <Radio
+                                            id={option.id}
+                                            value={option.id}
+                                        >
+                                        </Radio>
                                         <Input
                                             type="text"
                                             variant={'underlined'}
-                                            label={`Option ${option.id}`}
+                                            label={`Option ${index + 1}`}
                                             value={option.value}
                                             onChange={(e) => {
-                                                const newOptions = options.map(opt =>
-                                                    opt.id === option.id ? { ...opt, option: e.target.value } : opt
+                                                setOptions(
+                                                    options.map(
+                                                        (opt: any) => {
+                                                            if (opt.id === option.id)
+                                                                return {
+                                                                    ...opt,
+                                                                    value: e.target.value
+                                                                };
+                                                            return opt;
+                                                        }
+                                                    )
                                                 );
-                                                setOptions(newOptions);
                                             }}
                                         />
+                                        <button
+                                            className="text-red-500 hover:text-red-700"
+                                            onClick={() => handleRemoveOption(option.id)}
+                                        >
+                                            <FontAwesomeIcon icon={faXmark} />
+                                        </button>
                                     </div>
-                                    <button
-                                        className="text-red-500 hover:text-red-700"
-                                        onClick={() => handleRemoveOption(option.id)}
-                                    >
-                                        <FontAwesomeIcon icon={faXmark} />
-                                    </button>
-                                </div>
-                            )
-                        })
-                    )
-                }
+                                )
+                            })
+                        )
+                    }
+                </RadioGroup>
                 <div className="flex items-center w-full space-x-4 mt-4">
                     <svg
                         className="w-6 h-6 text-gray-400"
@@ -164,8 +192,10 @@ const EditBox = ({ ...props }) => {
                             <Input
                                 type="text"
                                 variant={'underlined'}
-                                label="Answers"
-                                value={contentQues?.results}
+                                label="Explain"
+                                value={explain}
+                                className='w-[300px]'
+                                onChange={(e) => setExplain(e.target.value)}
                             />
                         </div>
                     </button>

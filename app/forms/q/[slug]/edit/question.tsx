@@ -2,36 +2,57 @@ import React, { useEffect, useState } from 'react';
 import EditBox from './editbox';
 import { Input } from '@nextui-org/input';
 
+/**
+ * Common
+ */
+interface Answer {
+    id: string;
+    value: string;
+};
+
+interface Ques {
+    id: number;
+    name: string;
+    type: string;
+    answers: Answer[];
+    results: string[];
+    explain: string;
+};
+
 const Question = ({ ...props }) => {
     const { dataques } = props;
-    const [count, setCount] = useState<number>(1);
-    const [questions, setQuestions] = useState([{
-        "id": 1,
-        "name": "",
-        "type": "",
-    }]);
+    const [questions, setQuestions] = useState<Ques[]>([]);
+
+    useEffect(() => {
+        setQuestions(dataques);
+    }, [dataques]);
 
     const handleCreateQuestion = () => {
-        setCount(count + 1);
+        const count: number = questions.length + 1;
+
         setQuestions([
             ...questions,
             {
-                id: count + 1,
+                id: count,
                 name: '',
                 type: '',
+                answers: [],
+                explain: '',
+                results: []
             }
-        ])
+        ]);
     };
 
     const handleRemoveQuestion = (id: number) => {
         setQuestions(
-            questions.filter(question => id !== question.id)
+            questions.filter(
+                (question: Ques) => {
+                    return question.id !== id;
+                }
+            )
         );
     };
-
-    useEffect(() => {
-        setQuestions(dataques);
-    });
+    console.log(questions);
 
     return (
         <>

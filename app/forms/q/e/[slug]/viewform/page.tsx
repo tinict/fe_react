@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react";
 import QuestionBox from "./questionbox";
 import { GetQuiz } from "@/common/api/form/quiz.get";
+import { usePathname } from "next/navigation";
 
+/**
+ * common
+ */
 interface Answer {
     id: string;
     value: string;
@@ -33,6 +37,8 @@ interface GetCategory {
 
 export default function Page({ ...props }) {
     const [questions, setQuestions] = useState<Question[] | []>([]);
+    const pathname = usePathname();
+
 
     const fetchGetQuiz = async (id: any) => {
         const data = await GetQuiz(id);
@@ -43,8 +49,21 @@ export default function Page({ ...props }) {
         }
     };
 
+    /**
+     * common
+     */
+    const splitPath = (url: string) => {
+        const regex = /forms\/q\/([^\/]+)\/edit/;
+
+        const match = url.match(regex);
+        const slug = match ? match[1] : null;
+
+        return slug;
+    };
+
     useEffect(() => {
-        fetchGetQuiz('a3833e4f-dc0f-4fe9-9c76-038382dad0e7');
+        let id = splitPath(pathname);
+        fetchGetQuiz(id);
     }, []);
 
     return (
