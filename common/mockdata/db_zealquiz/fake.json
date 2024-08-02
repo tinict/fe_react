@@ -1,0 +1,63 @@
+{
+  "categories": [
+    {
+      "id": "a3833e4f-dc0f-4fe9-9c76-038382dad0e7",
+      "name": "Mathematics Category"
+    }
+  ],
+  "questions": [
+    {
+      "id": "1",
+      "name": "What is 6 + 10? đwdwdw",
+      "type": "multiple-choice",
+      "category_id": "a3833e4f-dc0f-4fe9-9c76-038382dad0e7"
+    },
+    {
+      "id": "2",
+      "name": "What is 6 + 7?",
+      "type": "multiple-choice",
+      "category_id": "a3833e4f-dc0f-4fe9-9c76-038382dad0e7"
+    }
+  ],
+  "answers": [
+    {
+      "id": "1",
+      "value": "10",
+      "question_id": "1"
+    },
+    {
+      "id": "2",
+      "value": "8",
+      "question_id": "1"
+    },
+    {
+      "id": "6",
+      "value": "8",
+      "question_id": "2"
+    },
+    {
+      "id": "7",
+      "value": "9",
+      "question_id": "2"
+    },
+    {
+      "id": "8",
+      "value": "10",
+      "question_id": "2"
+    }
+  ],
+  "correct_answers": [
+    {
+      "question_id": "1",
+      "answer_id": "1",
+      "explain": "The square root of 81 is 9. đwdw oke",
+      "id": "1"
+    },
+    {
+      "question_id": "2",
+      "answer_id": "5",
+      "explain": "The square root of 81 is 9.ưdwd2342ffe",
+      "id": "2"
+    }
+  ]
+}

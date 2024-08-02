@@ -1,4 +1,3 @@
-import { ProfileGetMapper } from "@/mapping";
 import axios from "axios";
 import Cookies from 'js-cookie';
 
@@ -34,8 +33,6 @@ export const GetQuiz = async (id: string): Promise<{ props: { repo: Category } }
 
     if (!res) return null;
 
-    //Get Category
-    console.log(res.data);
     const repo: Category = res.data;
 
     return {
