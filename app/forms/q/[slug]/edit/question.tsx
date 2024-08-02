@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import EditBox from './editbox';
 import { Input } from '@nextui-org/input';
+import { PutQuestions } from '@/common/api/form/questions.put';
+import { DeleteQuestions } from '@/common/api/form/questions.delete';
 
 /**
  * Common
  */
-interface Answer {
-    id: string;
-    value: string;
-};
-
 interface Ques {
     id: number;
     name: string;
     type: string;
-    answers: Answer[];
-    results: string[];
-    explain: string;
 };
 
 const Question = ({ ...props }) => {
@@ -36,9 +30,6 @@ const Question = ({ ...props }) => {
                 id: count,
                 name: '',
                 type: '',
-                answers: [],
-                explain: '',
-                results: []
             }
         ]);
     };
@@ -51,8 +42,17 @@ const Question = ({ ...props }) => {
                 }
             )
         );
+
+        fetchDeleteQuestion(id.toString());
     };
-    console.log(questions);
+
+    const fetchPutQuestion = async (id: string, question: any) => {
+        await PutQuestions(id, question);
+    };
+
+    const fetchDeleteQuestion = async (id: string) => {
+        await DeleteQuestions(id);
+    };
 
     return (
         <>
@@ -73,17 +73,24 @@ const Question = ({ ...props }) => {
                 </div>
             </div>
             {(
-                questions.map((question: any, index: number) => {
+                questions?.map((question: any, index: number) => {
                     return (
                         <EditBox
+                            idQues={question?.id}
                             key={index}
                             ques={question}
                             newbox={handleCreateQuestion}
                             removebox={() => handleRemoveQuestion(question?.id)}
+                            updateQuestion={fetchPutQuestion}
                         />
                     );
                 })
             )}
+            {
+                questions && (
+                    <EditBox />
+                )
+            }
         </>
     );
 };

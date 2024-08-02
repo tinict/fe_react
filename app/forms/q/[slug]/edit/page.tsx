@@ -1,36 +1,34 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { GetQuiz } from "@/common/api/form/quiz.get";
 import Question from "./question";
-import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { QueryQuestions } from "@/common/api/form/questions.query";
 
 /**
  * Common
  */
-interface Answer {
-    id: string;
-    value: string;
-};
-
 interface Question {
     id: number;
     name: string;
     type: string;
-    answers: Answer[];
-    results: string[];
-    explain: string;
 };
 
 export default function Page() {
     const [questions, setQuestions] = useState<Question[]>([]);
     const pathname = usePathname();
 
-    const fetchGetQuiz = async (id: any) => {
-        const data = await GetQuiz(id);
+    /**
+     * Fetch API Get questions / query with params: id
+     * @param id 
+     */
+    const fetchQueryQuestion = async (id: any) => {
+        const data = await QueryQuestions({
+            category_id: id
+        });
+        console.log(data, id);
         if (data) 
-            setQuestions(data?.props?.repo?.questions);
+            setQuestions(data?.props?.repo);
     };
 
     /**
@@ -47,7 +45,7 @@ export default function Page() {
 
     useEffect(() => {
         let id = splitPath(pathname)
-        fetchGetQuiz(id);
+        fetchQueryQuestion(id);
     }, []);
 
     return (
