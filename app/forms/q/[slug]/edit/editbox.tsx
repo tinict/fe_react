@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Radio, RadioGroup } from '@nextui-org/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus, faClipboardList, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faClipboardList, faFloppyDisk, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { QueryAnswers } from '@/common/api/form/answers.query';
+import { QueryCorrectAnswers } from '@/common/api/form/correct_answers.query';
+import { PutAnswers } from '@/common/api/form/answers.put';
+import { PutCorrectAnswers } from '@/common/api/form/correct_answers.put';
+import { DeleteAnswers } from '@/common/api/form/answers.delete';
 
 /**
  * Common
@@ -11,12 +16,43 @@ interface Option {
     value: string,
 };
 
+interface CorrectAnswer {
+    question_id: string,
+    answer_id: string,
+    explain: string,
+    id: string,
+};
+
 const EditBox = ({ ...props }) => {
-    const { ques, newbox, removebox } = props;
+    const { ques, newbox, removebox, idQues, updateQuestion } = props;
     const [contentQues, setContentQuest] = useState<string>('');
-    const [results, setResults] = useState<string[]>(['']);
+    const [results, setResults] = useState<string>('');
+    const [correctAnswers, setCorrectAnswers] = useState<CorrectAnswer[]>([]);
     const [explain, setExplain] = useState<string>('');
     const [options, setOptions] = useState<Option[]>([]);
+
+    const fetchQueryAnswers = async (id: any) => {
+        const data = await QueryAnswers({
+            question_id: id
+        });
+
+        if (data)
+            setOptions(data?.props?.repo);
+    };
+
+    const fetchQueryCorrectAnswers = async (question_id: string) => {
+        const data = await QueryCorrectAnswers({
+            question_id,
+        });
+
+        if (data) {
+            const correct_answers = data?.props?.repo
+
+            setCorrectAnswers(correct_answers);
+            setResults(correct_answers[0]?.answer_id);
+            setExplain(correct_answers[0]?.explain);
+        }
+    };
 
     const handleAddOption = () => {
         let count = options.length + 1;
@@ -31,17 +67,54 @@ const EditBox = ({ ...props }) => {
         );
     };
 
+    const fetchPutAnswers = async () => {
+        options.forEach(async (option: any) => {
+            await PutAnswers(option.id, option);
+        })
+    };
+
+    const fetchPutCorrectAnswers = async () => {
+        options.forEach(async (option: any) => {
+            await PutAnswers(option.id, option);
+        });
+
+        PutCorrectAnswers(correctAnswers[0].id, {
+            question_id: idQues,
+            answer_id: results,
+            explain
+        });
+    };
+
+    const fetchDeleteAnswers = async (id: string) => {
+        await DeleteAnswers(id);
+    };
+
     const handleRemoveOption = (id: string) => {
         setOptions(
             options.filter(option => option.id !== id)
         );
+        fetchDeleteAnswers(id);
+    };
+
+    const handleUpdateQuestion = (id: string, dataUpdate: any) => {
+        updateQuestion(id, {
+            ...ques,
+            ...dataUpdate
+        });
+        fetchPutAnswers();
+        fetchPutCorrectAnswers();
     };
 
     useEffect(() => {
-        setContentQuest(ques.name);
-        setOptions(ques.answers);
-        setResults(ques.results);
-        setExplain(ques.explain);
+        setContentQuest(ques?.name);
+
+        if (idQues) {
+            fetchQueryAnswers(idQues);
+            fetchQueryCorrectAnswers(idQues);
+        }
+
+        setResults(correctAnswers[0]?.answer_id);
+        setExplain(correctAnswers[0]?.explain);
     }, [removebox]);
 
     return (
@@ -108,12 +181,12 @@ const EditBox = ({ ...props }) => {
                     aria-label="shirt-size"
                     name="shirt-size"
                     className="space-y-2"
-                    value={results[0]}
-                    onChange={(e) => setResults([e.target.value])}
+                    value={results}
+                    onChange={(e) => setResults(e.target.value)}
                 >
                     {
                         (
-                            options.map((option: any, index: number) => {
+                            options?.map((option: any, index: number) => {
                                 return (
                                     <div
                                         className="flex items-center w-full space-x-2"
@@ -200,13 +273,26 @@ const EditBox = ({ ...props }) => {
                         </div>
                     </button>
                 </div>
-                <button className="mr-2">
-                    <FontAwesomeIcon
-                        icon={faTrash}
-                        className="text-gray-500 text-xl"
-                        onClick={removebox}
-                    />
-                </button>
+                <div className='flex space-x-2'>
+                    <button
+                        className="mr-2"
+                        onClick={() => handleUpdateQuestion(idQues, {
+                            name: contentQues
+                        })}
+                    >
+                        <FontAwesomeIcon
+                            icon={faFloppyDisk}
+                            className="text-gray-500 text-xl"
+                        />
+                    </button>
+                    <button className="mr-2">
+                        <FontAwesomeIcon
+                            icon={faTrash}
+                            className="text-gray-500 text-xl"
+                            onClick={removebox}
+                        />
+                    </button>
+                </div>
             </div>
             <div
                 className="opacity-0 group-hover:opacity-100 flex flex-col justify-center items-center bg-white p-[2px] rounded-lg shadow-[rgba(0,0,0,0.05)_0px_0px_0px_1px,rgb(209,213,219)_0px_0px_0px_1px_inset] w-[50px] mb-[16px] absolute right-[-68] top-0"
