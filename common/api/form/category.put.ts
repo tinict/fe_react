@@ -6,13 +6,16 @@ interface Category {
     name: string;
 };
 
-export const GetCategories = async (): Promise<{ props: { repo: Category[] } } | null> => {
+export const PutCategory = async (
+    id: string,
+    body: Category
+): Promise<{ props: { repo: Category[] } } | null> => {
     const authorization = Cookies.get('client_token');
 
-    const res = await axios.get(`http://localhost:8000/categories`, {
-        headers: { authorization }
+    const res = await axios.put(`http://localhost:8000/categories/${id}`, {
+        ...body
     })
-        .catch(function (error) {
+        .catch((error) => {
             console.log(error);
         });
 

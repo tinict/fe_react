@@ -1,14 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GetCategories } from "@/common/api/form/categories.get";
 import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
+import { PostCategories } from "@/common/api/form/categories.post";
+import { PostQuestions } from "@/common/api/form/questions.post";
+import { deleteCategory } from "@/common/api/form/category.delete";
 
 interface Category {
-    id: number;
+    id: string;
     name: string;
 };
 
@@ -17,12 +20,29 @@ export default function Page() {
     const router = useRouter();
     let genUUIDV4 = uuidv4();
 
+    const fetchCreateQuestion = async (question: any) => {
+        await PostQuestions(question);
+    };
+
+    const handleSaveFormQuiz = async (id: string) => {
+        await PostCategories({
+            id,
+            name: "Quiz form without title"
+        })
+        await fetchCreateQuestion({
+            id: genUUIDV4,
+            name: 'Quiz form without title',
+            type: 'multiple-choice',
+            category_id: id
+        });
+    };
+
     const fetchGetCategories = async () => {
         const data = await GetCategories();
 
         if (data) {
             console.log(data);
-            setCategories(data.props.repo)
+            setCategories(data?.props?.repo);
         }
     };
 
@@ -30,10 +50,26 @@ export default function Page() {
         fetchGetCategories();
     }, []);
 
-    const redirectEdit = (id: string) => {
+    const handleCreateQuizForm = async (id: string) => {
+        await handleSaveFormQuiz(id);
+        await redirectEdit(id);
+    };
+
+    const handleDeleteCategory = async (id: string) => {
+        setCategories(
+            categories.filter(
+                (category: Category) => {
+                    return category.id !== id;
+                }
+            )
+        );
+        await deleteCategory(id);
+    };
+
+    const redirectEdit = async (id: string) => {
         router.push(`/forms/q/${id}/edit`);
     };
-    
+
 
     return (
         <section className="w-full">
@@ -44,7 +80,7 @@ export default function Page() {
                 <div className="flex flex-wrap">
                     <div
                         className="mr-[19px] mb-[24px] cursor-pointer"
-                        onClick={() => redirectEdit(genUUIDV4)}
+                        onClick={() => handleCreateQuizForm(genUUIDV4)}
                     >
                         <div className="w-[171px] h-[128px] shadow-[rgba(0,0,0,0.16)_0px_1px_4px] flex flex-column items-center justify-center">
                             <div className="w-[100px] h-[100px] flex items-center justify-center">
@@ -61,8 +97,7 @@ export default function Page() {
                     {categories?.map((category: any, index: number) => (
                         <div
                             key={index}
-                            className="mr-[19px] mb-[24px] cursor-pointer"
-                            onClick={() => redirectEdit(category?.id)}
+                            className="mr-[19px] mb-[24px] cursor-pointer group relative"
                         >
                             <div className="w-[171px] h-[128px] shadow-[rgba(0,0,0,0.16)_0px_1px_4px] p-2 flex flex-column items-center justify-center">
                                 <div className="h-[100px] w-[100px]">
@@ -71,6 +106,29 @@ export default function Page() {
                                         alt={category?.name}
                                         className="w-full object-cover"
                                     />
+                                </div>
+
+                                <div
+                                    className="opacity-0 group-hover:opacity-100 flex justify-center items-center bg-white bg-opacity-50 p-[2px] rounded-lg shadow-[rgba(0,0,0,0.05)_0px_0px_0px_1px,rgb(209,213,219)_0px_0px_0px_1px_inset] w-full mb-[16px] absolute right-0 top-0 left-0 bottom-3 space-x-2"
+                                >
+                                    <span
+                                        className='h-[36px] w-[36px] flex flex-column items-center justify-center cursor-pointer'
+                                        onClick={() => redirectEdit(category?.id)}
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faPenToSquare}
+                                            className="text-red-700 text-xl"
+                                        />
+                                    </span>
+                                    <span
+                                        className='h-[36px] w-[36px] flex flex-column items-center justify-center cursor-pointer'
+                                        onClick={() => handleDeleteCategory(category?.id)}
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faTrash}
+                                            className="text-red-700 text-xl"
+                                        />
+                                    </span>
                                 </div>
                             </div>
                             <div className="mt-2">
