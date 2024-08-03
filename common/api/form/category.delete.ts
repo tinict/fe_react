@@ -6,13 +6,13 @@ interface Category {
     name: string;
 };
 
-export const GetCategories = async (): Promise<{ props: { repo: Category[] } } | null> => {
+export const deleteCategory = async (
+    id: string
+): Promise<{ props: { repo: Category[] } } | null> => {
     const authorization = Cookies.get('client_token');
 
-    const res = await axios.get(`http://localhost:8000/categories`, {
-        headers: { authorization }
-    })
-        .catch(function (error) {
+    const res = await axios.delete(`http://localhost:8000/categories/${id}`)
+        .catch((error) => {
             console.log(error);
         });
 

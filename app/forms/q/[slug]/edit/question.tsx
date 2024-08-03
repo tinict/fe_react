@@ -3,18 +3,21 @@ import EditBox from './editbox';
 import { Input } from '@nextui-org/input';
 import { PutQuestions } from '@/common/api/form/questions.put';
 import { DeleteQuestions } from '@/common/api/form/questions.delete';
+import { PostQuestions } from '@/common/api/form/questions.post';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Common
  */
 interface Ques {
-    id: number;
+    id: string;
     name: string;
     type: string;
+    category_id: string;
 };
 
 const Question = ({ ...props }) => {
-    const { dataques } = props;
+    const { idCategory, dataques } = props;
     const [questions, setQuestions] = useState<Ques[]>([]);
 
     useEffect(() => {
@@ -22,19 +25,27 @@ const Question = ({ ...props }) => {
     }, [dataques]);
 
     const handleCreateQuestion = () => {
-        const count: number = questions.length + 1;
-
+        const genId = uuidv4();
         setQuestions([
             ...questions,
             {
-                id: count,
+                id: genId,
                 name: '',
-                type: '',
+                type: 'multiple-choice',
+                category_id: idCategory
             }
         ]);
+
+        console.log(questions);
+        fetchCreateQuestion({
+            id: genId,
+            name: '',
+            type: 'multiple-choice',
+            category_id: idCategory
+        });
     };
 
-    const handleRemoveQuestion = (id: number) => {
+    const handleRemoveQuestion = (id: string) => {
         setQuestions(
             questions.filter(
                 (question: Ques) => {
@@ -43,7 +54,7 @@ const Question = ({ ...props }) => {
             )
         );
 
-        fetchDeleteQuestion(id.toString());
+        fetchDeleteQuestion(id);
     };
 
     const fetchPutQuestion = async (id: string, question: any) => {
@@ -54,10 +65,14 @@ const Question = ({ ...props }) => {
         await DeleteQuestions(id);
     };
 
+    const fetchCreateQuestion = async (question: any) => {
+        await PostQuestions(question);
+    };
+
     return (
         <>
-            {/* Box title default */}
-            <div
+            {/* Box description default */}
+            {/* <div
                 className="group bg-white p-6 rounded-lg shadow-[rgba(0,0,0,0.05)_0px_0px_0px_1px,rgb(209,213,219)_0px_0px_0px_1px_inset] w-full mb-[16px] relative"
             >
                 <div
@@ -71,12 +86,13 @@ const Question = ({ ...props }) => {
                         placeholder="Enter your description"
                     />
                 </div>
-            </div>
+            </div> */}
             {(
                 questions?.map((question: any, index: number) => {
                     return (
                         <EditBox
                             idQues={question?.id}
+                            idCat={idCategory}
                             key={index}
                             ques={question}
                             newbox={handleCreateQuestion}
@@ -86,11 +102,6 @@ const Question = ({ ...props }) => {
                     );
                 })
             )}
-            {
-                questions && (
-                    <EditBox />
-                )
-            }
         </>
     );
 };

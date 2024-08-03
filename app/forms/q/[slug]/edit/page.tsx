@@ -52,6 +52,7 @@ export default function Page() {
         <section className="w-[770px] pt-[12px]">
             {/* Box create/edit question */}
             <Question
+                idCategory={splitPath(pathname)}
                 dataques={questions}
             />
         </section>
