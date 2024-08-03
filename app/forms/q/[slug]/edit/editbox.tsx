@@ -7,6 +7,8 @@ import { QueryCorrectAnswers } from '@/common/api/form/correct_answers.query';
 import { PutAnswers } from '@/common/api/form/answers.put';
 import { PutCorrectAnswers } from '@/common/api/form/correct_answers.put';
 import { DeleteAnswers } from '@/common/api/form/answers.delete';
+import { PostAnswers } from '@/common/api/form/answers.post';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Common
@@ -14,6 +16,7 @@ import { DeleteAnswers } from '@/common/api/form/answers.delete';
 interface Option {
     id: string,
     value: string,
+    question_id: string
 };
 
 interface CorrectAnswer {
@@ -56,15 +59,26 @@ const EditBox = ({ ...props }) => {
 
     const handleAddOption = () => {
         let count = options.length + 1;
+        const genId = uuidv4();
+
         setOptions(
             [
                 ...options,
                 {
-                    id: count.toString(),
-                    value: ''
+                    id: genId,
+                    value: '',
+                    question_id: idQues,
                 }
             ]
         );
+
+        console.log(idQues);
+
+        fetchPostAnswers({
+            id: genId,
+            question_id: idQues,
+            value: "",
+        })
     };
 
     const fetchPutAnswers = async () => {
@@ -89,6 +103,10 @@ const EditBox = ({ ...props }) => {
         await DeleteAnswers(id);
     };
 
+    const fetchPostAnswers = async (data: any) => {
+        await PostAnswers(data);
+    };
+
     const handleRemoveOption = (id: string) => {
         setOptions(
             options.filter(option => option.id !== id)
@@ -101,6 +119,7 @@ const EditBox = ({ ...props }) => {
             ...ques,
             ...dataUpdate
         });
+
         fetchPutAnswers();
         fetchPutCorrectAnswers();
     };
