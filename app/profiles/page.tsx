@@ -5,21 +5,19 @@ import UserManager from "@/components/tables/listUser";
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/breadcrumbs";
 import { Button } from "@nextui-org/button";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 export default function Home() {
     const [userListProfile, setUserListProfile] = useState<object | null>({});
-    const searchParams = useSearchParams();
-    const page: number = Number(searchParams.get('p')) || 1;
 
-    const fetchUserProfilesData = async () => {
+    const fetchUserProfilesData = async (page: number) => {
         try {
             const profiles = await getAllProfile({
                 offset: (page - 1) * 10,
                 limit: 10,
             });
             if (profiles) {
-                console.log(profiles)
+                console.log(profiles);
                 setUserListProfile(profiles?.props);
             }
         } catch (error: any) {
@@ -27,8 +25,20 @@ export default function Home() {
         }
     };
 
+    return (
+        <Suspense fallback={<p>Loading...</p>}>
+            <UserListComponent fetchUserProfilesData={fetchUserProfilesData} userListProfile={userListProfile} />
+        </Suspense>
+    );
+}
+
+function UserListComponent({ ...props }) {
+    const { fetchUserProfilesData, userListProfile } = props;
+    const searchParams = useSearchParams();
+    const page: number = Number(searchParams.get('p')) || 1;
+
     useEffect(() => {
-        fetchUserProfilesData();
+        fetchUserProfilesData(page);
     }, [page]);
 
     return (
@@ -50,4 +60,4 @@ export default function Home() {
             />
         </section>
     );
-};
+}
