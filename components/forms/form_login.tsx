@@ -1,63 +1,52 @@
 "use client";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGooglePlusG } from '@fortawesome/free-brands-svg-icons'
-import { Input, Button, Spacer } from '@nextui-org/react';
-import { RedirectGoogleAuth } from '@/common/api/sso/google/auth.redirect';
+import { Spacer } from "@nextui-org/react";
+
+import { RedirectGoogleAuth } from "@/common/api/sso/google/auth.redirect";
+import ButtonLogin from "../buttons/ButtonLogin";
+
+import { FaFacebook } from "react-icons/fa6";
+import { IoLogoMicrosoft } from "react-icons/io5";
+import { FcGoogle } from "react-icons/fc";
 
 const FormLogin = () => {
-    return (
-        <div style={{ maxWidth: '500px', padding: '20px', textAlign: 'center' }}>
-            <Spacer y={1} />
-            <Input
-                isClearable
-                fullWidth
-                color="primary"
-                placeholder="Email"
-            />
-            <Spacer y={1} />
-            <Input
-                isClearable
-                fullWidth
-                color="primary"
-                placeholder="Password"
-            />
-            <Spacer y={1.5} />
-            <Button
-                color="primary"
-                fullWidth
-            >
-                Login
-            </Button>
-            <Spacer y={0.5} />
-            <div
-                style={{
-                    display: 'flex',
-                    width: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}
-            >
-                <Button
-                    style={{
-                        backgroundColor: '#4285F4',
-                        padding: '12px 24px',
-                        borderRadius: '50px',
-                        margin: '10px',
-                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                        textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                    onClick={RedirectGoogleAuth}
-                >
-                    <FontAwesomeIcon icon={faGooglePlusG} color="white" fontSize="20px" />
-                </Button>
-            </div>
+  return (
+    <div className="w-full h-[70vh] flex items-center justify-center">
+      <div className="md:block hidden w-1/2 h-[80vh] overflow-hidden ">
+        <img
+          className="w-full h-full object-cover object-center"
+          src="https://i.pinimg.com/564x/4a/90/33/4a903338c0e478248153bd8f3f6f6745.jpg"
+          alt="login"
+        />
+      </div>
+      <div className="md:w-[50%] sm:px-10 w-full px-0">
+        <div className="flex gap-5">
+          <p className="text-[32px] text-gray-500 font-medium mb-5">Register</p>
+          <p className="text-[32px] font-medium mb-5">Login</p>
         </div>
-    );
+        <ButtonLogin
+          onClick={RedirectGoogleAuth}
+          icon={<FcGoogle />}
+          content={"Login with Google"}
+        />
+        <Spacer y={4} />
+        <ButtonLogin
+          icon={<FaFacebook className="text-blue-600" />}
+          content={"Login with Facebook"}
+        />
+        <Spacer y={4} />
+        <ButtonLogin
+          icon={<IoLogoMicrosoft className="text-blue-500" />}
+          content={"Login with Microsoft"}
+        />
+        <Spacer y={4} />
+
+        <p>
+          Don't have an account? <a className="text-blue-500">Sign up</a> now!
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default FormLogin;

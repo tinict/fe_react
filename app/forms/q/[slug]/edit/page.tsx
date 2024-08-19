@@ -1,60 +1,60 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Question from "./question";
 import { usePathname } from "next/navigation";
+
+import Question from "./question";
+
 import { QueryQuestions } from "@/common/api/form/questions.query";
 
 /**
  * Common
  */
 interface Question {
-    id: number;
-    name: string;
-    type: string;
-};
+  id: number;
+  name: string;
+  type: string;
+}
 
 export default function Page() {
-    const [questions, setQuestions] = useState<Question[]>([]);
-    const pathname = usePathname();
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const pathname = usePathname();
 
-    /**
-     * Fetch API Get questions / query with params: id
-     * @param id 
-     */
-    const fetchQueryQuestion = async (id: any) => {
-        const data = await QueryQuestions({
-            category_id: id
-        });
-        console.log(data, id);
-        if (data) 
-            setQuestions(data?.props?.repo);
-    };
+  /**
+   * Fetch API Get questions / query with params: id
+   * @param id
+   */
+  const fetchQueryQuestion = async (id: any) => {
+    const data = await QueryQuestions({
+      category_id: id,
+    });
 
-    /**
-     * common
-     */
-    const splitPath = (url: string) => {
-        const regex = /forms\/q\/([^\/]+)\/edit/;
+    console.log(data, id);
+    if (data) setQuestions(data?.props?.repo);
+  };
 
-        const match = url.match(regex);
-        const slug = match ? match[1] : null;
+  /**
+   * common
+   */
+  const splitPath = (url: string) => {
+    const regex = /forms\/q\/([^\/]+)\/edit/;
 
-        return slug;
-    };
+    const match = url.match(regex);
+    const slug = match ? match[1] : null;
 
-    useEffect(() => {
-        let id = splitPath(pathname)
-        fetchQueryQuestion(id);
-    }, []);
+    return slug;
+  };
 
-    return (
-        <section className="w-[770px] pt-[12px]">
-            {/* Box create/edit question */}
-            <Question
-                idCategory={splitPath(pathname)}
-                dataques={questions}
-            />
-        </section>
-    );
-};
+  useEffect(() => {
+    let id = splitPath(pathname);
+
+    fetchQueryQuestion(id);
+  }, []);
+
+  return (
+    <section className="w-[770px] pt-[12px]">
+      {/* Box create/edit question */}
+      <Question dataques={questions} idCategory={splitPath(pathname)} />
+    </section>
+  );
+}

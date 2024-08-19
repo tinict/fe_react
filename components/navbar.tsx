@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Navbar as NextUINavbar,
@@ -14,19 +14,17 @@ import { Link } from "@nextui-org/link";
 import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import {
-  Logo,
-} from "@/components/icons";
-import { useRouter } from 'next/navigation';
+import { Logo } from "@/components/icons";
 
 export const Navbar = () => {
   const router = useRouter();
 
   const redirectLogin = () => {
-    router.push('/login');
+    router.push("/login");
   };
 
   return (
@@ -62,7 +60,9 @@ export const Navbar = () => {
       >
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
-          <Button color="primary" onClick={redirectLogin}>Register / Login</Button>
+          <Button color="primary" onClick={redirectLogin}>
+            Register / Login
+          </Button>
         </NavbarItem>
       </NavbarContent>
 

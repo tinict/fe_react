@@ -1,28 +1,29 @@
 import axios from "axios";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 interface Category {
-    id: string;
-    name: string;
-};
+  id: string;
+  name: string;
+}
 
 export const deleteCategory = async (
-    id: string
+  id: string,
 ): Promise<{ props: { repo: Category[] } } | null> => {
-    const authorization = Cookies.get('client_token');
+  const authorization = Cookies.get("client_token");
 
-    const res = await axios.delete(`http://localhost:8000/categories/${id}`)
-        .catch((error) => {
-            console.log(error);
-        });
+  const res = await axios
+    .delete(`http://localhost:8000/categories/${id}`)
+    .catch((error) => {
+      console.log(error);
+    });
 
-    if (!res) return null;
+  if (!res) return null;
 
-    const repo: Category[] = res.data;
+  const repo: Category[] = res.data;
 
-    return {
-        props: {
-            repo
-        }
-    };
+  return {
+    props: {
+      repo,
+    },
+  };
 };

@@ -1,78 +1,78 @@
-import React, { useEffect, useState } from 'react';
-import EditBox from './editbox';
-import { Input } from '@nextui-org/input';
-import { PutQuestions } from '@/common/api/form/questions.put';
-import { DeleteQuestions } from '@/common/api/form/questions.delete';
-import { PostQuestions } from '@/common/api/form/questions.post';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+
+import EditBox from "./editbox";
+
+import { PutQuestions } from "@/common/api/form/questions.put";
+import { DeleteQuestions } from "@/common/api/form/questions.delete";
+import { PostQuestions } from "@/common/api/form/questions.post";
 
 /**
  * Common
  */
 interface Ques {
-    id: string;
-    name: string;
-    type: string;
-    category_id: string;
-};
+  id: string;
+  name: string;
+  type: string;
+  category_id: string;
+}
 
 const Question = ({ ...props }) => {
-    const { idCategory, dataques } = props;
-    const [questions, setQuestions] = useState<Ques[]>([]);
+  const { idCategory, dataques } = props;
+  const [questions, setQuestions] = useState<Ques[]>([]);
 
-    useEffect(() => {
-        setQuestions(dataques);
-    }, [dataques]);
+  useEffect(() => {
+    setQuestions(dataques);
+  }, [dataques]);
 
-    const handleCreateQuestion = () => {
-        const genId = uuidv4();
-        setQuestions([
-            ...questions,
-            {
-                id: genId,
-                name: '',
-                type: 'multiple-choice',
-                category_id: idCategory
-            }
-        ]);
+  const handleCreateQuestion = () => {
+    const genId = uuidv4();
 
-        console.log(questions);
-        fetchCreateQuestion({
-            id: genId,
-            name: '',
-            type: 'multiple-choice',
-            category_id: idCategory
-        });
-    };
+    setQuestions([
+      ...questions,
+      {
+        id: genId,
+        name: "",
+        type: "multiple-choice",
+        category_id: idCategory,
+      },
+    ]);
 
-    const handleRemoveQuestion = (id: string) => {
-        setQuestions(
-            questions.filter(
-                (question: Ques) => {
-                    return question.id !== id;
-                }
-            )
-        );
+    console.log(questions);
+    fetchCreateQuestion({
+      id: genId,
+      name: "",
+      type: "multiple-choice",
+      category_id: idCategory,
+    });
+  };
 
-        fetchDeleteQuestion(id);
-    };
+  const handleRemoveQuestion = (id: string) => {
+    setQuestions(
+      questions.filter((question: Ques) => {
+        return question.id !== id;
+      }),
+    );
 
-    const fetchPutQuestion = async (id: string, question: any) => {
-        await PutQuestions(id, question);
-    };
+    fetchDeleteQuestion(id);
+  };
 
-    const fetchDeleteQuestion = async (id: string) => {
-        await DeleteQuestions(id);
-    };
+  const fetchPutQuestion = async (id: string, question: any) => {
+    await PutQuestions(id, question);
+  };
 
-    const fetchCreateQuestion = async (question: any) => {
-        await PostQuestions(question);
-    };
+  const fetchDeleteQuestion = async (id: string) => {
+    await DeleteQuestions(id);
+  };
 
-    return (
-        <>
-            {/* Box description default */}
-            {/* <div
+  const fetchCreateQuestion = async (question: any) => {
+    await PostQuestions(question);
+  };
+
+  return (
+    <>
+      {/* Box description default */}
+      {/* <div
                 className="group bg-white p-6 rounded-lg shadow-[rgba(0,0,0,0.05)_0px_0px_0px_1px,rgb(209,213,219)_0px_0px_0px_1px_inset] w-full mb-[16px] relative"
             >
                 <div
@@ -87,23 +87,21 @@ const Question = ({ ...props }) => {
                     />
                 </div>
             </div> */}
-            {(
-                questions?.map((question: any, index: number) => {
-                    return (
-                        <EditBox
-                            idQues={question?.id}
-                            idCat={idCategory}
-                            key={index}
-                            ques={question}
-                            newbox={handleCreateQuestion}
-                            removebox={() => handleRemoveQuestion(question?.id)}
-                            updateQuestion={fetchPutQuestion}
-                        />
-                    );
-                })
-            )}
-        </>
-    );
+      {questions?.map((question: any, index: number) => {
+        return (
+          <EditBox
+            key={index}
+            idCat={idCategory}
+            idQues={question?.id}
+            newbox={handleCreateQuestion}
+            ques={question}
+            removebox={() => handleRemoveQuestion(question?.id)}
+            updateQuestion={fetchPutQuestion}
+          />
+        );
+      })}
+    </>
+  );
 };
 
 export default Question;
