@@ -1,30 +1,33 @@
 import axios from "axios";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 interface Answer {
-    id: string;
-    value: string,
-    question_id: string;
-};
+  id: string;
+  value: string;
+  question_id: string;
+}
 
-export const QueryAnswers = async (query: any): Promise<{ props: { repo: Answer[] } } | null> => {
-    const authorization = Cookies.get('client_token');
+export const QueryAnswers = async (
+  query: any,
+): Promise<{ props: { repo: Answer[] } } | null> => {
+  const authorization = Cookies.get("client_token");
 
-    const res = await axios.get(`http://localhost:8000/answers`, {
-        headers: { authorization },
-        params: query
+  const res = await axios
+    .get(`http://localhost:8000/answers`, {
+      headers: { authorization },
+      params: query,
     })
-        .catch((error) => {
-            console.log(error);
-        });
+    .catch((error) => {
+      console.log(error);
+    });
 
-    if (!res) return null;
+  if (!res) return null;
 
-    const repo: Answer[] = res.data;
+  const repo: Answer[] = res.data;
 
-    return {
-        props: {
-            repo
-        }
-    };
+  return {
+    props: {
+      repo,
+    },
+  };
 };

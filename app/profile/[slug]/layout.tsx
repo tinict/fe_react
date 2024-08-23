@@ -1,9 +1,5 @@
 "use client";
 
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown";
-import { User } from "@nextui-org/react";
-import { Metadata } from "next";
-
 // export const metadata: Metadata = {
 //   title: {
 //     default: siteConfig.name,
@@ -15,11 +11,7 @@ import { Metadata } from "next";
 //   },
 // };
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="py-[16px]">
@@ -28,10 +20,8 @@ export default function Layout({
             Profile Details
           </h1>
         </section>
-        <section>
-          {children}
-        </section>
+        <section>{children}</section>
       </div>
     </>
-  )
-};
+  );
+}
