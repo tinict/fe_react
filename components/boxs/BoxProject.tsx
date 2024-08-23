@@ -1,15 +1,6 @@
 import React from "react";
 import CollapseProject from "../collapses/CollapseProject";
 
-const a = {
-  title: "eCommerce Website Development",
-  img: "https://images.squarespace-cdn.com/content/v1/63622c27c2d35d6fc2b3ee8b/95f35e35-4f92-42d4-82cb-f657eab18f6d/2.png?format=1500w",
-  collapses: [
-    { title: "Full-stack eCommerce development", content: "" },
-    { title: "Website support and maintainance", content: "" },
-  ],
-};
-
 function BoxProject({ project }: { project: any }) {
   return (
     <div className="w-full flex flex-col text-left">

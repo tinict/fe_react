@@ -31,8 +31,8 @@ const ullis = [
 
 function FooterHome() {
   return (
-    <div className="w-full px-16 py-20 bg-black font-manrope text-[16px] text-gray-200 font-light flex gap-32">
-      <div className="max-w-[300px]">
+    <div className="w-full lg:px-16 md:px-10 p-4 py-20 bg-black font-manrope text-[16px] text-gray-200 font-light flex md:flex-row flex-col md:items-start items-center lg:gap-32 md:gap-6">
+      <div className="max-w-[300px] md:mb-0 mb-10">
         <div className="flex items-center justify-center text-[40px]">
           <Logo size={100} />
           <p className="font-bold text-inherit">Zeal Bio</p>
@@ -42,7 +42,7 @@ function FooterHome() {
         <p>✉︎ sales@variux.com</p>
       </div>
       <div className="flex-1 flex flex-col justify-between gap-28">
-        <div className="grid grid-cols-3">
+        <div className="grid md:grid-cols-3 sm:grid-cols-2 md:gap-0 gap-4">
           {ullis.map((ulli, index) => (
             <div key={index}>
               <p className="text-[18px] text-[#008c95] font-medium mb-4">
