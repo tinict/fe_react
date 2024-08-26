@@ -11,10 +11,9 @@ export const PostCategories = async (
 ): Promise<{ props: { repo: Category[] } } | null> => {
   const authorization = Cookies.get("client_token");
 
-  const res = await axios
-    .post(`http://localhost:8000/categories`, {
-      ...body,
-    })
+  const res = await axios.post(`http://localhost:5000/api/v1/category`, {
+    ...body,
+  })
     .catch((error) => {
       console.log(error);
     });

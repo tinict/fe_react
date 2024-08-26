@@ -23,7 +23,7 @@ interface Category {
 
 export const GetQuiz = async (
   id: string,
-): Promise<{ props: { repo: Category } } | null> => {
+): Promise<{ props: { repo: Category } } | null> => {   
   const authorization = Cookies.get("client_token");
 
   const res = await axios

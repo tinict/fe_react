@@ -2,10 +2,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 interface Answer {
-  id: string;
   value: string;
+  category_id: string;
   question_id: string;
-}
+};
 
 export const PostAnswers = async (
   body: Answer,
@@ -13,7 +13,7 @@ export const PostAnswers = async (
   const authorization = Cookies.get("client_token");
 
   const res = await axios
-    .post(`http://localhost:8000/answers`, {
+    .post(`http://localhost:5000/api/v1/answer`, {
       ...body,
     })
     .catch((error) => {

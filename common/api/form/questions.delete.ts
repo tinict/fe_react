@@ -9,12 +9,13 @@ interface Question {
 }
 
 export const DeleteQuestions = async (
-  id: string,
+  category_id: string,
+  question_id: string,
 ): Promise<{ props: { repo: Question[] } } | null> => {
   const authorization = Cookies.get("client_token");
 
   const res = await axios
-    .delete(`http://localhost:8000/questions/${id}`)
+    .delete(`http://localhost:5000/api/v1/category/${category_id}/question/${question_id}`)
     .catch((error) => {
       console.log(error);
     });

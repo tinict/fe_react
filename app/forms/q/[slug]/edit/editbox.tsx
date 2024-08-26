@@ -25,104 +25,103 @@ import { PutAnswers } from "@/common/api/form/answers.put";
 import { PutCorrectAnswers } from "@/common/api/form/correct_answers.put";
 import { DeleteAnswers } from "@/common/api/form/answers.delete";
 import { PostAnswers } from "@/common/api/form/answers.post";
+import { GetAnswers } from "@/common/api/form/answers.get";
 
 /**
  * Common
  */
 interface Option {
-  id: string;
+  category_id: string;
   value: string;
   question_id: string;
-}
+};
 
 interface CorrectAnswer {
   question_id: string;
   answer_id: string;
   explain: string;
   id: string;
-}
+};
 
 const EditBox = ({ ...props }) => {
-  const { ques, newbox, removebox, idQues, updateQuestion } = props;
+  const { ques, newbox, removebox, idQues, updateQuestion, idCat } = props;
   const [contentQues, setContentQuest] = useState<string>("");
   const [results, setResults] = useState<string>("");
   const [correctAnswers, setCorrectAnswers] = useState<CorrectAnswer[]>([]);
   const [explain, setExplain] = useState<string>("");
-  const [options, setOptions] = useState<Option[]>([]);
+  const [options, setOptions] = useState<any[]>([]);
 
-  const fetchQueryAnswers = async (id: any) => {
-    const data = await QueryAnswers({
-      question_id: id,
-    });
-
-    if (data) setOptions(data?.props?.repo);
+  const fetchQueryAnswers = async (id_ques: string) => {
+    const data = await fetchGetAnswers(idCat, id_ques);
+    if (data) setOptions(data?.props?.repo.data);
   };
 
-  const fetchQueryCorrectAnswers = async (question_id: string) => {
-    const data = await QueryCorrectAnswers({
-      question_id,
-    });
+  // const fetchQueryCorrectAnswers = async (question_id: string) => {
+  //   const data = await QueryCorrectAnswers({
+  //     question_id,
+  //   });
 
-    if (data) {
-      const correct_answers = data?.props?.repo;
+  //   if (data) {
+  //     const correct_answers = data?.props?.repo;
 
-      setCorrectAnswers(correct_answers);
-      setResults(correct_answers[0]?.answer_id);
-      setExplain(correct_answers[0]?.explain);
-    }
-  };
+  //     setCorrectAnswers(correct_answers);
+  //     setResults(correct_answers[0]?.answer_id);
+  //     setExplain(correct_answers[0]?.explain);
+  //   }
+  // };
 
-  const handleAddOption = () => {
-    let count = options.length + 1;
-    const genId = uuidv4();
-
+  const handleAddOption = async () => {
     setOptions([
       ...options,
       {
-        id: genId,
+        category_id: idCat,
         value: "",
         question_id: idQues,
       },
     ]);
 
-    console.log(idQues);
-
-    fetchPostAnswers({
-      id: genId,
+    await fetchPostAnswers({
+      category_id: idCat,
       question_id: idQues,
       value: "",
     });
+
+    await fetchQueryAnswers(idQues);
   };
 
-  const fetchPutAnswers = async () => {
-    options.forEach(async (option: any) => {
-      await PutAnswers(option.id, option);
-    });
-  };
+  // const fetchPutAnswers = async () => {
+  //   options.forEach(async (option: any) => {
+  //     await PutAnswers(option.id, option);
+  //   });
+  // };
 
-  const fetchPutCorrectAnswers = async () => {
-    options.forEach(async (option: any) => {
-      await PutAnswers(option.id, option);
-    });
+  // const fetchPutCorrectAnswers = async () => {
+  //   options.forEach(async (option: any) => {
+  //     await PutAnswers(option.id, option);
+  //   });
 
-    PutCorrectAnswers(correctAnswers[0].id, {
-      question_id: idQues,
-      answer_id: results,
-      explain,
-    });
-  };
+  //   PutCorrectAnswers(correctAnswers[0].id, {
+  //     question_id: idQues,
+  //     answer_id: results,
+  //     explain,
+  //   });
+  // };
 
-  const fetchDeleteAnswers = async (id: string) => {
-    await DeleteAnswers(id);
+  const fetchDeleteAnswers = async (id: string, category_id: string, question_id: string) => {
+    await DeleteAnswers(id, category_id, question_id);
   };
 
   const fetchPostAnswers = async (data: any) => {
     await PostAnswers(data);
   };
 
+  const fetchGetAnswers = async (category_id: string, answer_id: string) => {
+    return await GetAnswers(category_id, answer_id);
+  };
+
   const handleRemoveOption = (id: string) => {
-    setOptions(options.filter((option) => option.id !== id));
-    fetchDeleteAnswers(id);
+    setOptions(options.filter((option) => option?.id !== id));
+    fetchDeleteAnswers(id, idCat, idQues);
   };
 
   const handleUpdateQuestion = (id: string, dataUpdate: any) => {
@@ -131,16 +130,17 @@ const EditBox = ({ ...props }) => {
       ...dataUpdate,
     });
 
-    fetchPutAnswers();
-    fetchPutCorrectAnswers();
+    // fetchPutAnswers();
+    // fetchPutCorrectAnswers();
   };
 
   useEffect(() => {
+    fetchGetAnswers(idCat, idQues);
     setContentQuest(ques?.name);
 
     if (idQues) {
       fetchQueryAnswers(idQues);
-      fetchQueryCorrectAnswers(idQues);
+      // fetchQueryCorrectAnswers(idQues);
     }
 
     setResults(correctAnswers[0]?.answer_id);

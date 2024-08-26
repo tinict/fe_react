@@ -5,7 +5,7 @@ interface Question {
   id: number;
   name: string;
   type: string;
-}
+};
 
 export const PostQuestions = async (
   body: Question,
@@ -13,7 +13,7 @@ export const PostQuestions = async (
   const authorization = Cookies.get("client_token");
 
   const res = await axios
-    .post(`http://localhost:8000/questions`, {
+    .post(`http://localhost:5000/api/v1/question`, {
       ...body,
     })
     .catch((error) => {

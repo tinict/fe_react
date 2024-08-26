@@ -12,7 +12,7 @@ export const deleteCategory = async (
   const authorization = Cookies.get("client_token");
 
   const res = await axios
-    .delete(`http://localhost:8000/categories/${id}`)
+    .delete(`http://localhost:5000/api/v1/category/${id}`)
     .catch((error) => {
       console.log(error);
     });

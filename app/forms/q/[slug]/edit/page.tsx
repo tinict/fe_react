@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Question from "./question";
 
 import { QueryQuestions } from "@/common/api/form/questions.query";
+import { GetQuestions } from "@/common/api/form/questions.get";
 
 /**
  * Common
@@ -25,12 +26,10 @@ export default function Page() {
    * @param id
    */
   const fetchQueryQuestion = async (id: any) => {
-    const data = await QueryQuestions({
-      category_id: id,
-    });
+    const data = await GetQuestions(id);
 
     console.log(data, id);
-    if (data) setQuestions(data?.props?.repo);
+    if (data) setQuestions(data?.props?.repo.data);
   };
 
   /**
@@ -47,14 +46,16 @@ export default function Page() {
 
   useEffect(() => {
     let id = splitPath(pathname);
-
+    console.log("log: ", id)
     fetchQueryQuestion(id);
   }, []);
 
   return (
     <section className="w-[770px] pt-[12px]">
-      {/* Box create/edit question */}
-      <Question dataques={questions} idCategory={splitPath(pathname)} />
+      <Question 
+        dataques={questions} 
+        idCategory={splitPath(pathname)} 
+      />
     </section>
   );
 }

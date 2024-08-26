@@ -18,7 +18,7 @@ import { deleteCategory } from "@/common/api/form/category.delete";
 interface Category {
   id: string;
   name: string;
-}
+};
 
 export default function Page() {
   const [categories, setCategories] = useState<Category[] | []>([]);
@@ -34,6 +34,7 @@ export default function Page() {
       id,
       name: "Quiz form without title",
     });
+    
     await fetchCreateQuestion({
       id: genUUIDV4,
       name: "Quiz form without title",
@@ -46,8 +47,8 @@ export default function Page() {
     const data = await GetCategories();
 
     if (data) {
-      console.log(data);
-      setCategories(data?.props?.repo);
+      console.log(data?.props?.repo);
+      setCategories(data?.props?.repo?.data);
     }
   };
 
@@ -118,7 +119,7 @@ export default function Page() {
                     onClick={() => redirectEdit(category?.id)}
                   >
                     <FontAwesomeIcon
-                      className="text-red-700 text-xl"
+                      className="text-blue-700 text-xl"
                       icon={faPenToSquare}
                     />
                   </span>
@@ -127,7 +128,7 @@ export default function Page() {
                     onClick={() => handleDeleteCategory(category?.id)}
                   >
                     <FontAwesomeIcon
-                      className="text-red-700 text-xl"
+                      className="text-blue-700 text-xl"
                       icon={faTrash}
                     />
                   </span>

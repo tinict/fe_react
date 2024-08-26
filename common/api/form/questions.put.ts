@@ -15,7 +15,7 @@ export const PutQuestions = async (
   const authorization = Cookies.get("client_token");
 
   const res = await axios
-    .put(`http://localhost:8000/questions/${id}`, {
+    .put(`http://localhost:5000/questions/${id}`, {
       ...body,
     })
     .catch((error) => {

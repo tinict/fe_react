@@ -15,7 +15,7 @@ interface Ques {
   name: string;
   type: string;
   category_id: string;
-}
+};
 
 const Question = ({ ...props }) => {
   const { idCategory, dataques } = props;
@@ -25,7 +25,7 @@ const Question = ({ ...props }) => {
     setQuestions(dataques);
   }, [dataques]);
 
-  const handleCreateQuestion = () => {
+  const handleCreateQuestion = async () => {
     const genId = uuidv4();
 
     setQuestions([
@@ -38,62 +38,46 @@ const Question = ({ ...props }) => {
       },
     ]);
 
-    console.log(questions);
-    fetchCreateQuestion({
-      id: genId,
-      name: "",
+    await fetchCreateQuestion({
+      id: idCategory,
+      name: "Quiz form without title",
       type: "multiple-choice",
       category_id: idCategory,
     });
   };
 
-  const handleRemoveQuestion = (id: string) => {
+  const handleRemoveQuestion = async (id: string) => {
     setQuestions(
       questions.filter((question: Ques) => {
         return question.id !== id;
       }),
     );
 
-    fetchDeleteQuestion(id);
+    await fetchDeleteQuestion(idCategory, id);
   };
 
   const fetchPutQuestion = async (id: string, question: any) => {
     await PutQuestions(id, question);
   };
 
-  const fetchDeleteQuestion = async (id: string) => {
-    await DeleteQuestions(id);
+  const fetchDeleteQuestion = async (category_id: string, question_id: string) => {
+    await DeleteQuestions(category_id, question_id);
   };
 
   const fetchCreateQuestion = async (question: any) => {
+    console.log(question);
     await PostQuestions(question);
   };
 
   return (
-    <>
-      {/* Box description default */}
-      {/* <div
-                className="group bg-white p-6 rounded-lg shadow-[rgba(0,0,0,0.05)_0px_0px_0px_1px,rgb(209,213,219)_0px_0px_0px_1px_inset] w-full mb-[16px] relative"
-            >
-                <div
-                    key={'underlined'}
-                    className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
-                >
-                    <Input
-                        type="text"
-                        variant={'underlined'}
-                        label="Description"
-                        placeholder="Enter your description"
-                    />
-                </div>
-            </div> */}
+    <> 
       {questions?.map((question: any, index: number) => {
         return (
           <EditBox
             key={index}
             idCat={idCategory}
             idQues={question?.id}
-            newbox={handleCreateQuestion}
+            newbox={() => handleCreateQuestion()}
             ques={question}
             removebox={() => handleRemoveQuestion(question?.id)}
             updateQuestion={fetchPutQuestion}
