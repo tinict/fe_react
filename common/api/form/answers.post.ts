@@ -9,7 +9,7 @@ interface Answer {
 
 export const PostAnswers = async (
   body: Answer,
-): Promise<{ props: { repo: Answer[] } } | null> => {
+): Promise<{ props: { repo: Answer } } | null> => {
   const authorization = Cookies.get("client_token");
 
   const res = await axios
@@ -22,7 +22,7 @@ export const PostAnswers = async (
 
   if (!res) return null;
 
-  const repo: Answer[] = res.data;
+  const repo: Answer = res.data;
 
   return {
     props: {

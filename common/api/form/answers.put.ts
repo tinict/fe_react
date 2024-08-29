@@ -9,12 +9,14 @@ interface Answer {
 
 export const PutAnswers = async (
   id: string,
+  category_id: string,
+  question_id: string,
   body: Answer,
 ): Promise<{ props: { repo: Answer[] } } | null> => {
   const authorization = Cookies.get("client_token");
 
   const res = await axios
-    .put(`http://localhost:8000/answers/${id}`, {
+    .put(`http://localhost:5000/api/v1/category/${category_id}/question/${question_id}/answer/${id}`, {
       ...body,
     })
     .catch((error) => {

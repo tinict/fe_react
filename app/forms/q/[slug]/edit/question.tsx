@@ -15,6 +15,8 @@ interface Ques {
   name: string;
   type: string;
   category_id: string;
+  results: [];
+  explain: string;
 };
 
 const Question = ({ ...props }) => {
@@ -35,6 +37,8 @@ const Question = ({ ...props }) => {
         name: "",
         type: "multiple-choice",
         category_id: idCategory,
+        results: [],
+        explain: ""
       },
     ]);
 
@@ -43,6 +47,8 @@ const Question = ({ ...props }) => {
       name: "Quiz form without title",
       type: "multiple-choice",
       category_id: idCategory,
+      results: [],
+      explain: ""
     });
   };
 
@@ -57,7 +63,7 @@ const Question = ({ ...props }) => {
   };
 
   const fetchPutQuestion = async (id: string, question: any) => {
-    await PutQuestions(id, question);
+    await PutQuestions(id, idCategory, question);
   };
 
   const fetchDeleteQuestion = async (category_id: string, question_id: string) => {
@@ -70,7 +76,7 @@ const Question = ({ ...props }) => {
   };
 
   return (
-    <> 
+    <>
       {questions?.map((question: any, index: number) => {
         return (
           <EditBox

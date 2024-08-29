@@ -10,12 +10,13 @@ interface Question {
 
 export const PutQuestions = async (
   id: string,
+  category_id: string,
   body: Question,
 ): Promise<{ props: { repo: Question[] } } | null> => {
   const authorization = Cookies.get("client_token");
 
   const res = await axios
-    .put(`http://localhost:5000/questions/${id}`, {
+    .put(`http://localhost:5000/api/v1/category/${category_id}/question/${id}`, {
       ...body,
     })
     .catch((error) => {

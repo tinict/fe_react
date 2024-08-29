@@ -21,11 +21,12 @@ import { v4 as uuidv4 } from "uuid";
 
 import { QueryAnswers } from "@/common/api/form/answers.query";
 import { QueryCorrectAnswers } from "@/common/api/form/correct_answers.query";
-import { PutAnswers } from "@/common/api/form/answers.put";
 import { PutCorrectAnswers } from "@/common/api/form/correct_answers.put";
+import { PutAnswers } from "@/common/api/form/answers.put";
 import { DeleteAnswers } from "@/common/api/form/answers.delete";
 import { PostAnswers } from "@/common/api/form/answers.post";
 import { GetAnswers } from "@/common/api/form/answers.get";
+import { GetQuestion } from "@/common/api/form/question.get";
 
 /**
  * Common
@@ -47,28 +48,37 @@ const EditBox = ({ ...props }) => {
   const { ques, newbox, removebox, idQues, updateQuestion, idCat } = props;
   const [contentQues, setContentQuest] = useState<string>("");
   const [results, setResults] = useState<string>("");
-  const [correctAnswers, setCorrectAnswers] = useState<CorrectAnswer[]>([]);
+  const [correctAnswers, setCorrectAnswers] = useState<any[]>([]);
   const [explain, setExplain] = useState<string>("");
   const [options, setOptions] = useState<any[]>([]);
 
   const fetchQueryAnswers = async (id_ques: string) => {
     const data = await fetchGetAnswers(idCat, id_ques);
-    if (data) setOptions(data?.props?.repo.data);
+    if (data) {
+      setOptions(data?.props?.repo?.data);
+    }
   };
 
-  // const fetchQueryCorrectAnswers = async (question_id: string) => {
-  //   const data = await QueryCorrectAnswers({
-  //     question_id,
-  //   });
+  const setAnswerCorrect = (idCorrect: string) => {
+    correctAnswers[0] = idCorrect;
+    console.log(correctAnswers);
+    setCorrectAnswers(correctAnswers);
+  };
 
-  //   if (data) {
-  //     const correct_answers = data?.props?.repo;
+  const fetchQueryCorrectAnswers = async (id_ques: string) => {
+    const data = await GetQuestion(idCat, id_ques);
 
-  //     setCorrectAnswers(correct_answers);
-  //     setResults(correct_answers[0]?.answer_id);
-  //     setExplain(correct_answers[0]?.explain);
-  //   }
-  // };
+    if (data) {
+      const result = data?.props?.repo;
+
+      // setCorrectAnswers(correct_answers);
+      console.log(result);
+      if (result.data && result.data.results && result.data.results.length > 0) {
+        setResults(result.data.results[0]);
+      }
+      setExplain(result.data.explain);
+    }
+  };
 
   const handleAddOption = async () => {
     setOptions([
@@ -84,16 +94,19 @@ const EditBox = ({ ...props }) => {
       category_id: idCat,
       question_id: idQues,
       value: "",
-    });
-
-    await fetchQueryAnswers(idQues);
+    })
+      .then(async (res: any) => {
+        const newData = res.props.repo;
+        options.push(newData);
+        setOptions(options);
+      })
   };
 
-  // const fetchPutAnswers = async () => {
-  //   options.forEach(async (option: any) => {
-  //     await PutAnswers(option.id, option);
-  //   });
-  // };
+  const fetchPutAnswers = async () => {
+    options.forEach(async (option: any) => {
+      await PutAnswers(option.id, idCat, idQues, option);
+    });
+  };
 
   // const fetchPutCorrectAnswers = async () => {
   //   options.forEach(async (option: any) => {
@@ -112,7 +125,7 @@ const EditBox = ({ ...props }) => {
   };
 
   const fetchPostAnswers = async (data: any) => {
-    await PostAnswers(data);
+    return await PostAnswers(data);
   };
 
   const fetchGetAnswers = async (category_id: string, answer_id: string) => {
@@ -130,7 +143,7 @@ const EditBox = ({ ...props }) => {
       ...dataUpdate,
     });
 
-    // fetchPutAnswers();
+    fetchPutAnswers();
     // fetchPutCorrectAnswers();
   };
 
@@ -140,11 +153,11 @@ const EditBox = ({ ...props }) => {
 
     if (idQues) {
       fetchQueryAnswers(idQues);
-      // fetchQueryCorrectAnswers(idQues);
+      fetchQueryCorrectAnswers(idQues);
     }
 
-    setResults(correctAnswers[0]?.answer_id);
-    setExplain(correctAnswers[0]?.explain);
+    // setResults(correctAnswers[0]?.answer_id);
+    // setExplain(correctAnswers[0]?.explain);
   }, [removebox]);
 
   return (
@@ -212,7 +225,7 @@ const EditBox = ({ ...props }) => {
           {options?.map((option: any, index: number) => {
             return (
               <div key={index} className="flex items-center w-full space-x-2">
-                <Radio id={option.id} value={option.id} />
+                <Radio id={option.id} value={option.id} onClick={() => setAnswerCorrect(option.id)}/>
                 <Input
                   label={`Option ${index + 1}`}
                   type="text"
@@ -288,6 +301,8 @@ const EditBox = ({ ...props }) => {
             onClick={() =>
               handleUpdateQuestion(idQues, {
                 name: contentQues,
+                explain,
+                results: correctAnswers
               })
             }
           >
