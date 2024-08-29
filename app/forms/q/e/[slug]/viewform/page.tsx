@@ -44,8 +44,7 @@ export default function Page({ ...props }) {
     const data = await GetQuiz(id);
 
     if (data) {
-      console.log(data);
-      setQuestions(data.props.repo.questions);
+      setQuestions(data.props.repo.data[0].questions);
     }
   };
 
@@ -53,7 +52,7 @@ export default function Page({ ...props }) {
    * common
    */
   const splitPath = (url: string) => {
-    const regex = /forms\/q\/([^\/]+)\/edit/;
+    const regex = /forms\/q\/e\/([^\/]+)\/viewform/;
 
     const match = url.match(regex);
     const slug = match ? match[1] : null;
@@ -63,7 +62,7 @@ export default function Page({ ...props }) {
 
   useEffect(() => {
     let id = splitPath(pathname);
-
+    console.log(id)
     fetchGetQuiz(id);
   }, []);
 

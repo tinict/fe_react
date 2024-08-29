@@ -28,7 +28,7 @@ export const GetQuiz = async (
 
   const res = await axios
     .get(
-      `https://api.mockfly.dev/mocks/2c27f58b-dd2a-48b3-abef-a457b719ee95/api/v1/forms/${id}`,
+      `http://localhost:5000/api/v1/category/${id}`,
       {
         headers: { authorization },
       },
