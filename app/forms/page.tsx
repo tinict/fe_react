@@ -56,7 +56,7 @@ export default function Page() {
 
     if (data) {
       console.log(data?.props?.repo);
-      setCategories(data?.props?.repo?.data);
+      // setCategories(data?.props?.repo?.data);
     }
   };
 
@@ -83,7 +83,7 @@ export default function Page() {
   };
 
   return (
-    <section className="2xl:container">
+    <section className="2xl:container h-[1000px]">
       <div className="grid grid-cols-2 mt-4">
         <div>
           <h2 className="text-lg font-semibold text-[#2c31cf]">

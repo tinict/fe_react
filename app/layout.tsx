@@ -7,6 +7,7 @@ import { Providers } from "./providers";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { HeaderHome } from "@/components/headers";
+import FooterHome from "@/components/footers/home";
 
 export const metadata: Metadata = {
   title: {
@@ -46,6 +47,7 @@ export default function RootLayout({
             <main className="grid grid-col-1">
               {children}
             </main>
+            <FooterHome />
           </div>
         </Providers>
       </body>

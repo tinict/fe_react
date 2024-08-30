@@ -1,15 +1,21 @@
 "use client";
 
-import FooterHome from "@/components/footers/home";
-import { SectionIntro, SectionServices, SectionSolution } from "@/components/sections";
+import {
+  SectionIntro,
+  SectionProducts,
+  SectionServices,
+  SectionSolution,
+} from "@/components/sections";
 
 export default function Home() {
   return (
-    <section className="w-screen flex flex-cols-1">
+    <section>
+      <section className="snap-start"></section>
       <SectionIntro />
       <SectionServices />
+      <SectionProducts />
       <SectionSolution />
-      <FooterHome />
+      <section className="snap-start"></section>
     </section>
   );
 }

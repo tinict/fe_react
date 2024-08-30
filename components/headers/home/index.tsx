@@ -46,7 +46,7 @@ export const HeaderHome = () => {
   return (
     <NextUINavbar
       position="sticky"
-      className="bg-white grid grid-cols-1 md:mx-auto sm:mx-auto lg:mx-auto xl:mx-auto" 
+      className="bg-white grid grid-cols-1" 
       maxWidth="full"
     >
       <NavbarContent className="flex justify-between items-center w-full">

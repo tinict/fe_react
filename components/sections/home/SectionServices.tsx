@@ -63,7 +63,7 @@ const services = [
 
 function SectionServices() {
   return (
-    <div className="bg-[#ffffff]  text-center xl:py-[142px] md:py-16 py-10 xl:px-28 md:px-12 px-6">
+    <div className="bg-[#ffffff]  text-center xl:py-[142px] md:py-16 py-10 xl:px-28 md:px-12 px-6 snap-start">
       <h1 className="xl:text-[44px] md:text-[32px] text-[24px] text-black font-medium mb-12">Our Services</h1>
       <div className="grid md:grid-cols-3 xl:gap-[120px] gap-10">
         {services.map((service, index) => (
