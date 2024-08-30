@@ -5,7 +5,7 @@ import { SectionIntro, SectionServices, SectionSolution } from "@/components/sec
 
 export default function Home() {
   return (
-    <section className="w-screen flex flex-col">
+    <section className="w-screen flex flex-cols-1">
       <SectionIntro />
       <SectionServices />
       <SectionSolution />
