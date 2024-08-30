@@ -29,7 +29,7 @@ export const GetQuiz = async (
 
   const res = await axios
     .get(
-      `${process.env.API_URL}/${process.env.NEXT_PUBLIC_PREFIX_API_MODULE}/v1/category/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_PREFIX_API_MODULE}/v1/category/${id}`,
       {
         headers: { authorization },
       },
