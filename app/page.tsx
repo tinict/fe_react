@@ -10,7 +10,7 @@ import {
 export default function Home() {
   return (
     <section>
-      <section className="snap-start"></section>
+      <section className="h-[60px] snap-start"></section>
       <SectionIntro />
       <SectionServices />
       <SectionProducts />
