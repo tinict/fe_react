@@ -1,5 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 interface Category {
   id: string;
@@ -16,8 +18,7 @@ export const GetCategories = async (): Promise<{
     //   console.error('Authorization token not found');
     //   return null;
     // }
-
-    const res = await axios.get(`http://localhost:5000/api/v1/categories`, {
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_PREFIX_API_MODULE}/v1/categories`, {
       headers: { authorization },
     });
 

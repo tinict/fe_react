@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import 'dotenv/config';
 
 interface Question {
     id: number;
@@ -20,7 +21,7 @@ export const GetQuestions = async (
         //   return null;
         // }
 
-        const res = await axios.get(`http://localhost:5000/api/v1/category/${id}/questions`, {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_PREFIX_API_MODULE}/v1/category/${id}/questions`, {
             headers: { authorization },
         });
 

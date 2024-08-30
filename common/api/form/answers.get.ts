@@ -1,7 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-
 interface Answer {
     value: string;
     category_id: string;
@@ -22,7 +21,7 @@ export const GetAnswers = async (
         //   return null;
         // }
 
-        const res = await axios.get(`http://localhost:5000/api/v1/category/${category_id}/question/${question_id}/answers`, {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_PREFIX_API_MODULE}/v1/category/${category_id}/question/${question_id}/answers`, {
             headers: { authorization },
         });
 

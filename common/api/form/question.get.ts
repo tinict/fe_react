@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import 'dotenv/config';
 
 interface Question {
     id: number;
@@ -17,7 +18,7 @@ export const GetQuestion = async (
     const authorization = Cookies.get("client_token");
 
     const res = await axios
-        .get(`http://localhost:5000/api/v1/categories/${category_id}/questions/${question_id}/answer`)
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_PREFIX_API_MODULE}/v1/categories/${category_id}/questions/${question_id}/answer`)
         .catch((error) => {
             console.log(error);
         });

@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import 'dotenv/config';
 
 interface Category {
   id: string;
@@ -12,7 +13,7 @@ export const deleteCategory = async (
   const authorization = Cookies.get("client_token");
 
   const res = await axios
-    .delete(`http://localhost:5000/api/v1/category/${id}`)
+    .delete(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_PREFIX_API_MODULE}/v1/category/${id}`)
     .catch((error) => {
       console.log(error);
     });

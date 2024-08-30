@@ -13,7 +13,7 @@ export const PostAnswers = async (
   const authorization = Cookies.get("client_token");
 
   const res = await axios
-    .post(`http://localhost:5000/api/v1/answer`, {
+    .post(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_PREFIX_API_MODULE}/v1/answer`, {
       ...body,
     })
     .catch((error) => {

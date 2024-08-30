@@ -40,6 +40,8 @@ export default function Page() {
       name: "Quiz form without title",
       type: "multiple-choice",
       category_id: id,
+      results: [],
+      explain: ""
     });
   };
 
