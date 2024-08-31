@@ -1,15 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  faPenToSquare,
-  faPlus,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-
 import { GetCategories } from "@/common/api/form/categories.get";
 import { PostCategories } from "@/common/api/form/categories.post";
 import { PostQuestions } from "@/common/api/form/questions.post";
@@ -18,8 +11,9 @@ import { FcDocument } from "react-icons/fc";
 import { MdDeleteOutline } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { FaChartArea } from "react-icons/fa";
-import { FaEye } from "react-icons/fa";
 import { IoIosAddCircle } from "react-icons/io";
+import { Image } from "@nextui-org/image";
+import { noForms } from "@/utils/medias";
 
 interface Category {
   id: string;
@@ -56,7 +50,7 @@ export default function Page() {
 
     if (data) {
       console.log(data?.props?.repo);
-      // setCategories(data?.props?.repo?.data);
+      setCategories(data?.props?.repo?.data);
     }
   };
 
@@ -83,11 +77,11 @@ export default function Page() {
   };
 
   return (
-    <section className="2xl:container h-[1000px]">
+    <section className="2xl:container mb-4">
       <div className="grid grid-cols-2 mt-4">
         <div>
           <h2 className="text-lg font-semibold text-[#2c31cf]">
-            Start a new quiz
+            Start a new form
           </h2>
         </div>
         <div className="flex items-center justify-end">
@@ -131,6 +125,20 @@ export default function Page() {
           </div>
         ))}
       </div>
+      {
+        categories.length == 0 && (
+          <div className="flex justify-center items-center flex-col">
+            <Image
+                width={250}
+                height={250}
+                alt="NextUI hero Image with delay"
+                radius="md"
+                src={noForms.src}
+              />
+              <p className="text-base">There is no forms</p>
+          </div>
+        )
+      }
     </section>
   );
 }
