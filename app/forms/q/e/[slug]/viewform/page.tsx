@@ -67,7 +67,7 @@ export default function Page({ ...props }) {
   }, []);
 
   return (
-    <section className="w-[640px]">
+    <section className="col-span-12 xl:col-span-6 lg:col-span-8 md:col-span-10 sm:col-span-12 md:col-start-2 sm:col-start-0 lg:col-start-3 xl:col-start-4 col-start-1">
       {questions.map((item: Question, index: number) => {
         return <QuestionBox key={index} questions={item} />;
       })}
