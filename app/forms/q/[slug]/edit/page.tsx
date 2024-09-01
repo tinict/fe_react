@@ -51,7 +51,7 @@ export default function Page() {
   }, []);
 
   return (
-    <section className="w-[770px] pt-[12px]">
+    <section className="col-span-12 xl:col-span-6 lg:col-span-8 md:col-span-10 sm:col-span-12 md:col-start-2 sm:col-start-0 lg:col-start-3 xl:col-start-4 col-start-1">
       <Question 
         dataques={questions} 
         idCategory={splitPath(pathname)} 

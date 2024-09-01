@@ -161,8 +161,8 @@ const EditBox = ({ ...props }) => {
   }, [removebox]);
 
   return (
-    <div className="group bg-white p-6 rounded-lg shadow-[rgba(0,0,0,0.05)_0px_0px_0px_1px,rgb(209,213,219)_0px_0px_0px_1px_inset] w-full mb-[16px] relative">
-      <div className="w-full flex gap-4 items-center">
+    <div className="group bg-white p-6 rounded-lg shadow-[rgba(0,0,0,0.05)_0px_0px_0px_1px,rgb(209,213,219)_0px_0px_0px_1px_inset] w-full mb-[16px] relative mt-4">
+      <div className="w-full gap-4 items-center flex-nowrap md:flex">
         <div
           key={"underlined"}
           className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 h-[56px]"
@@ -177,7 +177,7 @@ const EditBox = ({ ...props }) => {
             }}
           />
         </div>
-        <div className="w-[215px]">
+        <div className="w-full">
           <Dropdown>
             <DropdownTrigger>
               <Button className="h-[48px] flex items-center justify-between w-full px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -285,7 +285,7 @@ const EditBox = ({ ...props }) => {
               className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 h-[56px]"
             >
               <Input
-                className="w-[300px]"
+                className="w-full"
                 label="Explain"
                 type="text"
                 value={explain}
@@ -320,7 +320,7 @@ const EditBox = ({ ...props }) => {
           </button>
         </div>
       </div>
-      <div className="opacity-0 group-hover:opacity-100 flex flex-col justify-center items-center bg-white p-[2px] rounded-lg shadow-[rgba(0,0,0,0.05)_0px_0px_0px_1px,rgb(209,213,219)_0px_0px_0px_1px_inset] w-[50px] mb-[16px] absolute right-[-68] top-0">
+      <div className="hidden 2xl:flex xl:flex lg:flex md:flex opacity-0 group-hover:opacity-100 flex flex-col justify-center items-center bg-white p-[2px] rounded-lg shadow-[rgba(0,0,0,0.05)_0px_0px_0px_1px,rgb(209,213,219)_0px_0px_0px_1px_inset] w-[50px] mb-[16px] absolute right-[-68] top-0">
         <span
           className="h-[36px] w-[36px] flex flex-column items-center justify-center cursor-pointer"
           onClick={newbox}

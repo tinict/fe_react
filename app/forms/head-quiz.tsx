@@ -58,7 +58,7 @@ export const HeadQuiz = () => {
 
   return (
     <>
-      <header className="h-[60px] w-full flex items-center justify-between px-2">
+      <header className="h-[60px] w-full flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className="flex h-[22px] w-[22px] items-center justify-center">
             <FontAwesomeIcon
