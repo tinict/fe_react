@@ -35,11 +35,11 @@ function FooterHome() {
       <div className="max-w-[300px] md:mb-0 mb-10">
         <div className="flex items-center justify-center text-[40px]">
           <Logo size={100} />
-          <p className="font-bold text-inherit">Zeal Bio</p>
+          <p className="font-bold text-inherit">ZealFlow.io</p>
         </div>
         <p>⚲ 3600 Dallas Highway Suite 230–360, Marietta, GA 30064</p>
         <p>☏ +1 678 667 2185</p>
-        <p>✉︎ sales@variux.com</p>
+        <p>✉︎ sales@zealflow.com</p>
       </div>
       <div className="flex-1 flex flex-col justify-between gap-28">
         <div className="grid md:grid-cols-3 sm:grid-cols-2 md:gap-0 gap-4">
