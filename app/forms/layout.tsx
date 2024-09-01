@@ -3,6 +3,7 @@
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/breadcrumbs";
 import { Image } from "@nextui-org/image";
 import { iconForms } from '@/utils/medias';
+import { Toaster } from "react-hot-toast";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -31,7 +32,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               ZealFlow Forms
             </h1>
             <span className="text-[#FFFFFF] text-xs">
-              Helps you create online forms and surveys
+              Helps you create online forms
             </span>
           </div>
         </div>
@@ -39,6 +40,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <section className="px-[24px]">
         {children}
       </section>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        gutter={8}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          className: '',
+          duration: 4000,
+          style: {
+            background: '#1F467E',
+            color: '#fff',
+          },
+          success: {
+            duration: 3000,
+          },
+        }}
+      />
     </>
   );
 }
