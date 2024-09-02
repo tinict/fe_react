@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { GetCategory } from "@/common/api/form/category.get";
 import { PutCategory } from "@/common/api/form/category.put";
+import { Button } from "@nextui-org/react";
 
 interface Category {
   id?: string;
@@ -58,15 +59,15 @@ export const HeadQuiz = () => {
 
   return (
     <>
-      <header className="h-[60px] w-full flex items-center justify-between">
+      <header className="h-[60px] w-full grid grid-cols-2">
         <div className="flex items-center space-x-4">
           <div className="flex h-[22px] w-[22px] items-center justify-center">
             <FontAwesomeIcon
-              className="text-gray-700 w-ful h-full text-[blue] cursor-pointer"
+              className="text-gray-700 w-full h-full text-[blue] cursor-pointer"
               icon={faFolder}
             />
           </div>
-          <span>
+          <span className="hidden sm:flex">
             <Input
               placeholder={"Template without title"}
               type="text"
@@ -81,28 +82,46 @@ export const HeadQuiz = () => {
             />
           </span>
         </div>
-        <div className="flex items-center space-x-4">
-          <div className="flex h-[22px] w-[22px] items-center justify-center">
+        <div className="flex items-center justify-end space-x-2">
+          <div className="flex items-center justify-center">
             <FontAwesomeIcon
-              className="text-gray-700 w-ful h-full text-[gray] cursor-pointer"
+              className="text-gray-700 h-[20px] w-[20px] text-[gray] cursor-pointer"
               icon={faLink}
             />
           </div>
-          <div className="flex h-[22px] w-[22px] items-center justify-center">
+          <div className="flex items-center justify-center">
             <FontAwesomeIcon
-              className="text-gray-700 w-ful h-full text-[gray] cursor-pointer"
+              className="text-gray-700 h-[20px] w-[20px] text-[gray] cursor-pointer"
               icon={faEye}
               onClick={handleViewform}
             />
           </div>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handleSaveFormQuiz}
-          >
-            Save
-          </button>
+          <div className="flex items-center justify-center">
+            <Button
+              color="primary"
+              size="sm"
+              radius="sm"
+              onClick={handleSaveFormQuiz}
+            >
+              Save
+            </Button>
+          </div>
         </div>
       </header>
+      <span className="flex sm:hidden">
+        <Input
+          placeholder={"Template without title"}
+          type="text"
+          value={category?.name}
+          variant={"underlined"}
+          onChange={(e) =>
+            setCategory({
+              ...category,
+              name: e.target.value,
+            })
+          }
+        />
+      </span>
     </>
   );
 };
