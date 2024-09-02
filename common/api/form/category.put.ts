@@ -13,7 +13,7 @@ export const PutCategory = async (
   const authorization = Cookies.get("client_token");
 
   const res = await axios
-    .put(`http://localhost:8000/categories/${id}`, {
+    .put(`http://localhost:5000/api/v1/category/${id}`, {
       ...body,
     })
     .catch((error) => {

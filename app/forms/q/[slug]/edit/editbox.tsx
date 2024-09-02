@@ -27,6 +27,7 @@ import { DeleteAnswers } from "@/common/api/form/answers.delete";
 import { PostAnswers } from "@/common/api/form/answers.post";
 import { GetAnswers } from "@/common/api/form/answers.get";
 import { GetQuestion } from "@/common/api/form/question.get";
+import toast from "react-hot-toast";
 
 /**
  * Common
@@ -74,9 +75,9 @@ const EditBox = ({ ...props }) => {
       // setCorrectAnswers(correct_answers);
       console.log(result);
       if (result.data && result.data.results && result.data.results.length > 0) {
-        setResults(result.data.results[0]);
+        setResults(result?.data?.results[0]);
       }
-      setExplain(result.data.explain);
+      setExplain(result?.data?.explain);
     }
   };
 
@@ -99,6 +100,10 @@ const EditBox = ({ ...props }) => {
         const newData = res.props.repo;
         options.push(newData);
         setOptions(options);
+        toast.success('Add answer success!');
+      })
+      .catch(() => {
+        toast.error('Add answer failure!');
       })
   };
 
@@ -121,7 +126,13 @@ const EditBox = ({ ...props }) => {
   // };
 
   const fetchDeleteAnswers = async (id: string, category_id: string, question_id: string) => {
-    await DeleteAnswers(id, category_id, question_id);
+    await DeleteAnswers(id, category_id, question_id)
+      .then(() => {
+        toast.success('Remove answer success!');
+      })
+      .catch(() => {
+        toast.error('Remove answer failure!');
+      })
   };
 
   const fetchPostAnswers = async (data: any) => {
@@ -158,7 +169,7 @@ const EditBox = ({ ...props }) => {
 
     // setResults(correctAnswers[0]?.answer_id);
     // setExplain(correctAnswers[0]?.explain);
-  }, [removebox]);
+  }, [removebox, newbox]);
 
   return (
     <>
@@ -339,7 +350,7 @@ const EditBox = ({ ...props }) => {
           </span>
         </div>
 
-        <div className="fixed md:hidden bottom-0 left-0 w-full backdrop-blur-md bg-white/50 flex justify-center p-3 shadow-lg opacity-0 group-hover:opacity-100 z-10">
+        <div className="fixed md:hidden bottom-0 left-0 w-full backdrop-blur-md bg-white/50 flex justify-center p-3 shadow-lg opacity-0 group-hover:opacity-100 z-20">
           <div className="flex justify-center items-center">
             <span
               className="h-[36px] w-[36px] flex flex-column items-center justify-center cursor-pointer"

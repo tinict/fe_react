@@ -12,7 +12,7 @@ export const GetCategory = async (
   const authorization = Cookies.get("client_token");
 
   const res = await axios
-    .get(`http://localhost:8000/categories/${id}`, {
+    .get(`http://localhost:5000/api/v1/category/${id}/detail`, {
       headers: { authorization },
     })
     .catch(function (error) {
