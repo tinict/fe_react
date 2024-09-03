@@ -12,7 +12,7 @@ export const GetCategory = async (
   const authorization = Cookies.get("client_token");
 
   const res = await axios
-    .get(`http://localhost:8000/categories/${id}`, {
+    .get(`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_PREFIX_API_MODULE}/v1/category/${id}/detail`, {
       headers: { authorization },
     })
     .catch(function (error) {

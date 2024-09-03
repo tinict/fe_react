@@ -10,16 +10,19 @@ import { v4 as uuidv4 } from "uuid";
 import { GetCategory } from "@/common/api/form/category.get";
 import { PutCategory } from "@/common/api/form/category.put";
 import { Button } from "@nextui-org/react";
+import { FaCode } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 interface Category {
   id?: string;
   name: string;
-}
+};
 
 export const HeadQuiz = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [category, setCategory] = useState<Category>();
+  const [isUpdateTiltle, setUpdateTitle] = useState(false);
 
   const splitPath = (url: string): string => {
     const regex = /forms\/q\/([^\/]+)\/edit/;
@@ -42,18 +45,23 @@ export const HeadQuiz = () => {
       id: idCate,
       name,
     });
+
+    toast.success("Update Title Form Success!");
+    setUpdateTitle(false);
   };
 
   const fetchApiGetCategory = async (id: string) => {
     const data = await GetCategory(id);
-
+    console.log(id);
+    console.log(data);
     if (data) {
       console.log(data);
-      setCategory(data.props.repo);
+      setCategory(data?.props?.repo?.data);
     }
   };
 
   useEffect(() => {
+    console.log("test head quiz")
     fetchApiGetCategory(splitPath(pathname));
   }, []);
 
@@ -73,22 +81,31 @@ export const HeadQuiz = () => {
               type="text"
               value={category?.name}
               variant={"underlined"}
-              onChange={(e) =>
+              onChange={(e) => {
                 setCategory({
                   ...category,
                   name: e.target.value,
-                })
-              }
+                });
+                setUpdateTitle(true);
+              }}
             />
+            {
+              isUpdateTiltle && (
+                <div className="flex items-center justify-center">
+                  <Button
+                    color="primary"
+                    size="sm"
+                    radius="sm"
+                    onClick={handleSaveFormQuiz}
+                  >
+                    Update
+                  </Button>
+                </div>
+              )
+            }
           </span>
         </div>
-        <div className="flex items-center justify-end space-x-2">
-          <div className="flex items-center justify-center">
-            <FontAwesomeIcon
-              className="text-gray-700 h-[20px] w-[20px] text-[gray] cursor-pointer"
-              icon={faLink}
-            />
-          </div>
+        <div className="flex items-center justify-end space-x-2 gap-4">
           <div className="flex items-center justify-center">
             <FontAwesomeIcon
               className="text-gray-700 h-[20px] w-[20px] text-[gray] cursor-pointer"
@@ -97,14 +114,21 @@ export const HeadQuiz = () => {
             />
           </div>
           <div className="flex items-center justify-center">
-            <Button
-              color="primary"
-              size="sm"
-              radius="sm"
-              onClick={handleSaveFormQuiz}
-            >
-              Save
-            </Button>
+            <FontAwesomeIcon
+              className="text-gray-700 h-[20px] w-[20px] text-[gray] cursor-pointer"
+              icon={faLink}
+              onClick={() => {
+                toast.error("Feature under development")
+              }}
+            />
+          </div>
+          <div className="flex items-center justify-center">
+            <FaCode
+              className="text-gray-700 h-[20px] w-[20px] text-[gray] cursor-pointer"
+              onClick={() => {
+                toast.error("Feature under development")
+              }}
+            />
           </div>
         </div>
       </header>
@@ -121,6 +145,20 @@ export const HeadQuiz = () => {
             })
           }
         />
+        {
+          isUpdateTiltle && (
+            <div className="flex items-center justify-center">
+              <Button
+                color="primary"
+                size="sm"
+                radius="sm"
+                onClick={handleSaveFormQuiz}
+              >
+                Update
+              </Button>
+            </div>
+          )
+        }
       </span>
     </>
   );
